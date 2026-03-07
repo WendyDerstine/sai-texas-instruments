@@ -60,6 +60,10 @@
         @apply bg-background;
       }
     }
+
+    .hero-cta-btn {
+      @apply border-background;
+    }
   }
 }
 

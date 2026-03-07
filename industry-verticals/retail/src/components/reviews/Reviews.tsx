@@ -27,6 +27,7 @@ interface ReviewsProps extends ComponentProps {
 
 export const Default = (props: ReviewsProps) => {
   const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
 
   const id = props.params.RenderingIdentifier;
   const uid = props.rendering.uid;
@@ -40,14 +41,13 @@ export const Default = (props: ReviewsProps) => {
   return (
     <div className={`${styles}`} id={id}>
       <div className="container py-20">
-        {/* Heading Section */}
         <div className="text-center">
           <p className="eyebrow pb-4">
-            <Text field={sectionEyebrow} />
+            <Text field={sectionEyebrow} editable={editable} />
           </p>
           <div className="flex flex-col items-center justify-center gap-2">
             <h2 className="inline-block font-bold max-lg:text-5xl" aria-label="section-title">
-              <Text field={sectionTitle} />
+              <Text field={sectionTitle} editable={editable} />
             </h2>
             <h2 className="inline-block font-bold max-lg:text-5xl" aria-label="accent-line">
               {!hideAccentLine && <AccentLine className="w-full max-w-xs" />}

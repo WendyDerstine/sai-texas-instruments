@@ -1,6 +1,6 @@
 import React, { JSX } from 'react';
 import { ComponentProps } from '@/lib/component-props';
-import { Text, Field, LinkField, Link } from '@sitecore-content-sdk/nextjs';
+import { Text, Field, LinkField, Link, useSitecore } from '@sitecore-content-sdk/nextjs';
 import { isParamEnabled } from '@/helpers/isParamEnabled';
 import AccentLine from '@/assets/icons/accent-line/AccentLine';
 import ProductCarousel from '../non-sitecore/ProductCarousel';
@@ -19,6 +19,8 @@ interface RelatedProductsProps extends ComponentProps {
 }
 
 export const Default = (props: RelatedProductsProps): JSX.Element => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const { styles, RenderingIdentifier: id } = props.params;
   const hideAccentLine = props?.params?.styles?.includes(CommonStyles.HideAccentLine);
   const autoPlay = isParamEnabled(props.params.Autoplay);
@@ -28,14 +30,11 @@ export const Default = (props: RelatedProductsProps): JSX.Element => {
     <section className={`component related-products ${styles}`} id={id || undefined}>
       <div className="container flex flex-col items-center p-8 md:p-10">
         <h2 className="mb-10 inline-block">
-          <Text field={props.fields?.Title} />
+          <Text field={props.fields?.Title} editable={editable} />
           {!hideAccentLine && <AccentLine className="mx-auto !h-4 w-[8ch]" />}
         </h2>
-
-        {/* Product Carousel */}
         <ProductCarousel products={props.fields.ProductsList} autoPlay={autoPlay} loop={loop} />
-
-        <Link field={props.fields.ProductsLink} className="arrow-btn" />
+        <Link field={props.fields.ProductsLink} className="arrow-btn" editable={editable} />
       </div>
     </section>
   );

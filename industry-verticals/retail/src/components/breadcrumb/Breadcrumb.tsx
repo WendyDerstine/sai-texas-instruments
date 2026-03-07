@@ -57,7 +57,10 @@ export const Default = (props: BreadcrumbProps) => {
   if (!showItem || !visibleAncestors.length) {
     if (isTemplateEditing) {
       return (
-        <div className={`component breadcrumb ${styles}`} id={id}>
+        <div
+          className={`component breadcrumb border-b border-[#e5e7eb] bg-[#fafafa] ${styles}`}
+          id={id}
+        >
           [BREADCRUMB NAVIGATION]
         </div>
       );
@@ -76,64 +79,64 @@ export const Default = (props: BreadcrumbProps) => {
   return (
     <nav
       aria-label="breadcrumb"
-      className={`component breadcrumb bg-background-muted ${styles}`}
+      className={`component breadcrumb border-b border-[#e5e7eb] bg-[#fafafa] ${styles}`}
       id={id}
     >
-      <ol className="container flex items-center gap-4 overflow-auto py-4 lg:py-7">
+      <ol className="container mx-auto flex max-w-7xl items-center gap-2 overflow-auto px-4 py-2.5 text-sm sm:px-6 lg:gap-3 lg:px-8">
         {homeAncestor && (
-          <li key={homeAncestor.id} className="text-foreground-light flex items-center gap-4">
+          <li key={homeAncestor.id} className="flex items-center gap-2 text-[#6b7280] lg:gap-3">
             <Link
               field={homeAncestor.url}
-              className="hover:text-foreground whitespace-nowrap transition-colors"
+              className="whitespace-nowrap transition-colors hover:text-[#002754]"
               title={getNavItemTitle(homeAncestor, false)}
             >
               <span className="hidden max-md:inline">
-                <Home className="size-4" aria-label="Home" />
+                <Home className="size-3.5" aria-label="Home" />
               </span>
               <span className="inline max-md:hidden">{getNavItemTitle(homeAncestor)}</span>
             </Link>
-            <ChevronRight className="size-4" />
+            <ChevronRight className="size-3.5 text-[#d1d5db]" />
           </li>
         )}
 
         {hasIntermediateAncestors && (
-          <li className="text-foreground-light flex items-center gap-4 md:hidden">
-            <MoreHorizontal className="size-4" />
-            <ChevronRight className="size-4" />
+          <li className="flex items-center gap-2 text-[#6b7280] md:hidden lg:gap-3">
+            <MoreHorizontal className="size-3.5" />
+            <ChevronRight className="size-3.5 text-[#d1d5db]" />
           </li>
         )}
 
         {intermediateAncestors.map((ancestor: BreadcrumbPage) => (
           <li
             key={ancestor.id}
-            className="text-foreground-light flex items-center gap-4 max-md:hidden"
+            className="flex items-center gap-2 text-[#6b7280] max-md:hidden lg:gap-3"
           >
             <Link
               field={ancestor.url}
-              className="hover:text-foreground whitespace-nowrap transition-colors"
+              className="whitespace-nowrap transition-colors hover:text-[#002754]"
               title={getNavItemTitle(ancestor, false)}
             >
               {getNavItemTitle(ancestor)}
             </Link>
-            <ChevronRight className="size-4" />
+            <ChevronRight className="size-3.5 text-[#d1d5db]" />
           </li>
         ))}
 
         {hasLastAncestor && (
-          <li key={lastAncestor.id} className="text-foreground-light flex items-center gap-4">
+          <li key={lastAncestor.id} className="flex items-center gap-2 text-[#6b7280] lg:gap-3">
             <Link
               field={lastAncestor.url}
-              className="hover:text-foreground whitespace-nowrap transition-colors"
+              className="whitespace-nowrap transition-colors hover:text-[#002754]"
               title={getNavItemTitle(lastAncestor, false)}
             >
               {getNavItemTitle(lastAncestor)}
             </Link>
-            <ChevronRight className="size-4" />
+            <ChevronRight className="size-3.5 text-[#d1d5db]" />
           </li>
         )}
 
         <li
-          className="border-foreground border-l py-2 pl-4 whitespace-nowrap lg:ml-4 lg:pl-8"
+          className="border-l border-[#e5e7eb] py-1 pl-3 font-medium whitespace-nowrap text-[#374151] lg:ml-3 lg:pl-6"
           title={getNavItemTitle(item, false)}
         >
           {getNavItemTitle(item)}

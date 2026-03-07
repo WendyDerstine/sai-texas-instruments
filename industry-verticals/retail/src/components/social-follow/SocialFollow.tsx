@@ -1,5 +1,11 @@
 import React from 'react';
-import { LinkField, Link as ContentSdkLink, Field, Text } from '@sitecore-content-sdk/nextjs';
+import {
+  LinkField,
+  Link as ContentSdkLink,
+  Field,
+  Text,
+  useSitecore,
+} from '@sitecore-content-sdk/nextjs';
 import { ComponentProps } from 'lib/component-props';
 import {
   faFacebookF,
@@ -33,6 +39,8 @@ type SocialFollowProps = ComponentProps & {
 };
 
 export const Default = (props: SocialFollowProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const id = props.params.RenderingIdentifier;
 
   const socialLinks = [
@@ -46,7 +54,7 @@ export const Default = (props: SocialFollowProps) => {
   return (
     <div className={`component social-follow ${props?.params?.styles}`} id={id}>
       <h5 className="text-accent mb-5 text-lg">
-        <Text field={props.fields.SocialTitle} />
+        <Text field={props.fields.SocialTitle} editable={editable} />
       </h5>
       <div className="flex flex-col gap-y-4">
         {socialLinks.map(({ icon, field, key }) => (
@@ -54,7 +62,11 @@ export const Default = (props: SocialFollowProps) => {
             {field?.value?.href && (
               <>
                 <FontAwesomeIcon icon={icon} className="text-foreground text-xl" />
-                <ContentSdkLink field={field} className="text-foreground hover:underline" />
+                <ContentSdkLink
+                  field={field}
+                  className="text-foreground hover:underline"
+                  editable={editable}
+                />
               </>
             )}
           </div>
@@ -65,6 +77,8 @@ export const Default = (props: SocialFollowProps) => {
 };
 
 export const Horizontal = (props: SocialFollowProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const id = props.params.RenderingIdentifier;
 
   const socialLinks = [
@@ -78,13 +92,13 @@ export const Horizontal = (props: SocialFollowProps) => {
   return (
     <div className={`component social-follow ${props?.params?.styles}`} id={id}>
       <h5 className="text-foreground mb-5 text-lg">
-        <Text field={props.fields.SocialTitle} />
+        <Text field={props.fields.SocialTitle} editable={editable} />
       </h5>
 
       <div className="flex gap-2">
         {socialLinks.map(({ icon: Icon, field, key }) => (
           <div key={key} className="flex items-center gap-4">
-            <ContentSdkLink field={field} className="text-foreground">
+            <ContentSdkLink field={field} className="text-foreground" editable={editable}>
               <Icon />
             </ContentSdkLink>
           </div>

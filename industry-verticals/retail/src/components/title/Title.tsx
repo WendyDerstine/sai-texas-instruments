@@ -52,13 +52,14 @@ export const Default = ({ params, fields }: TitleProps): JSX.Element => {
     },
   };
 
+  const editable = page.mode.isEditing;
   return (
     <ComponentContent styles={styles} id={id}>
-      {page.mode.isEditing ? (
-        <Text field={text} />
+      {editable ? (
+        <Text field={text} editable={editable} />
       ) : (
-        <Link field={link}>
-          <Text field={text} />
+        <Link field={link} editable={editable}>
+          <Text field={text} editable={editable} />
         </Link>
       )}
     </ComponentContent>

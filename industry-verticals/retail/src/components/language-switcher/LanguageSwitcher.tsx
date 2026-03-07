@@ -51,21 +51,24 @@ export default function LanguageSwitcher(props: LanguageSwitcherProps) {
     : 'en';
 
   return (
-    <div className={`component language-switcher ${styles}`} id={id}>
+    <div
+      className={`component language-switcher text-sm text-[#4a4a4a] [.component.header_&]:text-[#4a4a4a] ${styles}`}
+      id={id}
+    >
       <Select value={selectedLocale} onValueChange={(value) => changeLanguage(value as string)}>
         <SelectTrigger
           id="language-select"
           aria-label={`Current Language: ${selectedLocale}`}
-          className="border-0 shadow-none [&>svg]:hidden [.component.header_&]:px-1"
+          className="border-0 shadow-none hover:bg-transparent hover:text-[#002754] [&>svg]:hidden [.component.header_&]:h-auto [.component.header_&]:px-2 [.component.header_&]:py-1.5"
         >
           <div className="flex items-center gap-2">
-            <Globe className="size-5" />
-            <span className="max-lg:hidden">
+            <Globe className="size-4 shrink-0 text-[#4a4a4a] [.component.header_&]:text-[#4a4a4a]" />
+            <span>
               <SelectValue placeholder="Language" />
             </span>
           </div>
         </SelectTrigger>
-        <SelectContent className="min-w-44 border-0">
+        <SelectContent className="min-w-44 border border-[#e5e7eb] bg-white">
           {localeOptions.map((language) => (
             <SelectItem key={language.code} value={language.code}>
               <span>{language.label}</span>

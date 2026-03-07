@@ -8,6 +8,7 @@ import {
   LinkField,
   RichTextField,
   Text,
+  useSitecore,
 } from '@sitecore-content-sdk/nextjs';
 import { ComponentProps } from 'lib/component-props';
 import clsx from 'clsx';
@@ -40,24 +41,26 @@ export type PromoProps = ComponentProps & {
 const isShadowClassActive = (val: boolean) => (val ? 'shadow-2xl' : '');
 
 export const PromoContent = ({ ...props }) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const isAccentLineVisible = !props?.params?.styles?.includes(CommonStyles.HideAccentLine);
 
   return (
     <div className="space-y-5">
       <div className="eyebrow">
-        <Text field={props.fields.PromoSubTitle} />
+        <Text field={props.fields.PromoSubTitle} editable={editable} />
       </div>
 
       <h2 className="inline-block max-w-md">
-        <Text field={props.fields.PromoTitle} />
+        <Text field={props.fields.PromoTitle} editable={editable} />
         {isAccentLineVisible && <AccentLine className="w-full max-w-xs" />}
       </h2>
 
       <div className="max-w-lg text-lg">
-        <ContentSdkRichText field={props.fields.PromoDescription} />
+        <ContentSdkRichText field={props.fields.PromoDescription} editable={editable} />
       </div>
 
-      <Link field={props.fields.PromoMoreInfo} className="arrow-btn" />
+      <Link field={props.fields.PromoMoreInfo} className="arrow-btn" editable={editable} />
     </div>
   );
 };
@@ -181,6 +184,8 @@ export const Default = (props: PromoProps): JSX.Element => {
 };
 
 export const WithFullImage = (props: PromoProps): JSX.Element => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const id = props.params.RenderingIdentifier;
   const isPromoReversed = !props?.params?.styles?.includes(LayoutStyles.Reversed)
     ? ' flex-col'
@@ -193,23 +198,28 @@ export const WithFullImage = (props: PromoProps): JSX.Element => {
           <ContentSdkImage
             field={props.fields.PromoImageTwo}
             className="h-full w-full object-cover"
+            editable={editable}
           />
         </div>
 
         <div className="space-y-5">
           <div className="text-foreground-light font-semibold uppercase">
-            <Text field={props.fields.PromoSubTitle} />
+            <Text field={props.fields.PromoSubTitle} editable={editable} />
           </div>
 
           <div className="grid-col-1 grid gap-5 md:grid-cols-2">
             <div className="font-bold">
               <h2 className="max-w-md">
-                <Text field={props.fields.PromoTitle} />
+                <Text field={props.fields.PromoTitle} editable={editable} />
               </h2>
             </div>
 
             <div className="flex max-w-md items-center">
-              <ContentSdkRichText className="promo-text" field={props.fields.PromoDescription} />
+              <ContentSdkRichText
+                className="promo-text"
+                field={props.fields.PromoDescription}
+                editable={editable}
+              />
             </div>
           </div>
         </div>

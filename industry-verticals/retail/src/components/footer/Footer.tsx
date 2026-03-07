@@ -10,6 +10,7 @@ import {
   RichTextField,
   Text,
   TextField,
+  useSitecore,
 } from '@sitecore-content-sdk/nextjs';
 import React from 'react';
 
@@ -33,10 +34,10 @@ type FooterProps = {
 };
 
 export const Default = (props: FooterProps) => {
-  // rendering item id
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const id = props.params.RenderingIdentifier;
 
-  // placeholders keys
   const phKeyOne = `footer-list-first-${props?.params?.DynamicPlaceholderId}`;
   const phKeyTwo = `footer-list-second-${props?.params?.DynamicPlaceholderId}`;
   const phKeyThree = `footer-list-third-${props?.params?.DynamicPlaceholderId}`;
@@ -46,27 +47,27 @@ export const Default = (props: FooterProps) => {
   const sections = [
     {
       key: 'first_nav',
-      title: <Text field={props.fields.TitleOne} />,
+      title: <Text field={props.fields.TitleOne} editable={editable} />,
       content: <Placeholder name={phKeyOne} rendering={props.rendering} />,
     },
     {
       key: 'second_nav',
-      title: <Text field={props.fields.TitleTwo} />,
+      title: <Text field={props.fields.TitleTwo} editable={editable} />,
       content: <Placeholder name={phKeyTwo} rendering={props.rendering} />,
     },
     {
       key: 'third_nav',
-      title: <Text field={props.fields.TitleThree} />,
+      title: <Text field={props.fields.TitleThree} editable={editable} />,
       content: <Placeholder name={phKeyThree} rendering={props.rendering} />,
     },
     {
       key: 'fourth_nav',
-      title: <Text field={props.fields.TitleFour} />,
+      title: <Text field={props.fields.TitleFour} editable={editable} />,
       content: <Placeholder name={phKeyFour} rendering={props.rendering} />,
     },
     {
       key: 'fifth_nav',
-      title: <Text field={props.fields.TitleFive} />,
+      title: <Text field={props.fields.TitleFive} editable={editable} />,
       content: <Placeholder name={phKeyFive} rendering={props.rendering} />,
     },
   ];
@@ -77,9 +78,9 @@ export const Default = (props: FooterProps) => {
         <div className="container grid gap-12 py-28.5 lg:grid-cols-[1fr_3fr]">
           <div className="flex flex-col gap-7">
             <div className="sm:max-w-34">
-              <Image field={props.fields.Logo} />
+              <Image field={props.fields.Logo} editable={editable} />
             </div>
-            <RichText field={props.fields.Description} />
+            <RichText field={props.fields.Description} editable={editable} />
           </div>
           <div className="grid gap-13 sm:grid-cols-3 lg:grid-cols-5 lg:gap-5 xl:gap-12">
             {sections.map(({ key, title, content }) => (
@@ -94,11 +95,11 @@ export const Default = (props: FooterProps) => {
       <div className="bg-background">
         <div className="container flex items-center justify-between py-8.5 max-sm:flex-col max-sm:items-start max-sm:gap-10">
           <div className="max-sm:order-2">
-            <Text field={props.fields.CopyrightText} />
+            <Text field={props.fields.CopyrightText} editable={editable} />
           </div>
           <div className="flex items-center justify-between gap-20 max-lg:gap-10 max-sm:order-1 max-sm:flex-col max-sm:items-start max-sm:gap-5">
-            <Link field={props.fields.TermsText} className="hover:underline" />
-            <Link field={props.fields.PolicyText} className="hover:underline" />
+            <Link field={props.fields.TermsText} className="hover:underline" editable={editable} />
+            <Link field={props.fields.PolicyText} className="hover:underline" editable={editable} />
           </div>
         </div>
       </div>

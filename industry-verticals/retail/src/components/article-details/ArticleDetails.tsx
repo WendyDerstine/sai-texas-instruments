@@ -32,6 +32,7 @@ export const Default = ({ params, fields, rendering }: ArticleDetailsProps) => {
   const placeholderKey = `article-details-${DynamicPlaceholderId}`;
   const fullWidthPlaceholderKey = `article-details-full-width-${DynamicPlaceholderId}`;
   const isPageEditing = page.mode.isEditing;
+  const editable = page?.mode?.isEditing ?? false;
   const hideShareWidget = isParamEnabled(params.HideShareWidget);
 
   useEffect(() => {
@@ -76,20 +77,24 @@ export const Default = ({ params, fields, rendering }: ArticleDetailsProps) => {
             )}
 
             <div className="col-span-12 aspect-video w-full overflow-hidden rounded-lg lg:col-span-10 lg:col-start-2">
-              <ContentSdkImage field={fields.Image} className="h-full w-full object-cover" />
+              <ContentSdkImage
+                field={fields.Image}
+                className="h-full w-full object-cover"
+                editable={editable}
+              />
             </div>
 
             <div className="col-span-12 mt-8 lg:col-span-8 lg:col-start-3">
               <h2>
-                <ContentSdkText field={fields.Title} />
+                <ContentSdkText field={fields.Title} editable={editable} />
               </h2>
 
               <p className="text-foreground-muted mt-5 text-lg font-medium tracking-wide">
-                <ContentSdkText field={fields.ShortDescription} />
+                <ContentSdkText field={fields.ShortDescription} editable={editable} />
               </p>
 
               <div className="rich-text mt-10 text-lg">
-                <ContentSdkRichText field={fields.Content} />
+                <ContentSdkRichText field={fields.Content} editable={editable} />
               </div>
             </div>
 

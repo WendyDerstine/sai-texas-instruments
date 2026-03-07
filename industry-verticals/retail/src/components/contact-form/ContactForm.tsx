@@ -4,7 +4,7 @@ import React from 'react';
 import { useI18n } from 'next-localization';
 import type { JSX } from 'react';
 import type { ComponentProps } from '@/lib/component-props';
-import { Text, type TextField } from '@sitecore-content-sdk/nextjs';
+import { Text, useSitecore, type TextField } from '@sitecore-content-sdk/nextjs';
 
 export type ContactFormProps = ComponentProps & {
   params: { [key: string]: string };
@@ -15,7 +15,9 @@ export type ContactFormProps = ComponentProps & {
 
 export default function ContactForm(props: ContactFormProps): JSX.Element {
   const { t } = useI18n();
+  const { page } = useSitecore();
   const { styles, RenderingIdentifier: id } = props.params;
+  const editable = page?.mode?.isEditing ?? false;
 
   const FirstName = t('first_name') || 'First name';
   const LastName = t('last_name') || 'Last name';
@@ -110,7 +112,7 @@ export default function ContactForm(props: ContactFormProps): JSX.Element {
               type="submit"
               className="arrow-btn inline-flex cursor-pointer items-center gap-2"
             >
-              <Text field={SubmitText} />
+              <Text field={SubmitText} editable={editable} />
             </button>
           </div>
         </form>

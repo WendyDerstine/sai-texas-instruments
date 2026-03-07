@@ -1,6 +1,6 @@
 import React, { JSX } from 'react';
 import { ComponentProps } from '@/lib/component-props';
-import { Text, Field, RichText, RichTextField } from '@sitecore-content-sdk/nextjs';
+import { Text, Field, RichText, RichTextField, useSitecore } from '@sitecore-content-sdk/nextjs';
 import { useI18n } from 'next-localization';
 
 export type SubscribeBannerProps = ComponentProps & {
@@ -12,6 +12,8 @@ export type SubscribeBannerProps = ComponentProps & {
 };
 
 export const Default = (props: SubscribeBannerProps): JSX.Element => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const { styles, RenderingIdentifier: id } = props.params;
   const { t } = useI18n();
 
@@ -22,9 +24,8 @@ export const Default = (props: SubscribeBannerProps): JSX.Element => {
     >
       <div className="container max-w-4xl md:max-w-5xl md:px-10">
         <div className="grid items-center gap-y-6 md:grid-cols-2 md:gap-x-12 md:gap-y-0">
-          {/* Headline */}
           <h2 className="text-foreground text-2xl leading-tight font-medium xl:text-3xl">
-            <Text field={props.fields?.Title} />
+            <Text field={props.fields?.Title} editable={editable} />
           </h2>
 
           {/* Form */}
@@ -60,17 +61,18 @@ export const Default = (props: SubscribeBannerProps): JSX.Element => {
 };
 
 export const WithConsent = (props: SubscribeBannerProps): JSX.Element => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const { styles, RenderingIdentifier: id } = props.params;
   const uid = props.rendering.uid;
   const { t } = useI18n();
 
   return (
     <section className={`component subscribe-banner group ${styles ?? ''}`} id={id || undefined}>
-      {/* Headline*/}
       <div className="max-w-sm">
         <div className="mb-6">
           <h2 className="text-foreground text-lg leading-tight font-medium xl:text-xl">
-            <Text field={props.fields?.Title} />
+            <Text field={props.fields?.Title} editable={editable} />
           </h2>
         </div>
 
@@ -108,7 +110,7 @@ export const WithConsent = (props: SubscribeBannerProps): JSX.Element => {
                 required
               />
               <label htmlFor="subscribe-consent" className="text-foreground/70 text-sm leading-6">
-                <RichText field={props.fields.ConsentText} />
+                <RichText field={props.fields.ConsentText} editable={editable} />
               </label>
             </div>
           )}

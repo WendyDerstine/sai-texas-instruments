@@ -20,14 +20,18 @@ type ReviewCardProps = SitecoreItem<{
 }> & { isPageEditing?: boolean };
 
 const ReviewCard = (props: ReviewCardProps) => {
+  const editable = props.isPageEditing ?? false;
   return (
     <>
       <div className="aspect-square min-h-96 w-full rounded-2xl">
-        <ContentSdkImage className="image-cover rounded-2xl" field={props.fields.ReviewImage} />
+        <ContentSdkImage
+          className="image-cover rounded-2xl"
+          field={props.fields.ReviewImage}
+          editable={editable}
+        />
       </div>
       <div className="px-5">
         <div className="bg-background relative -top-15 flex min-h-70 flex-col items-center justify-between rounded-2xl p-8 text-center shadow-xl">
-          {/* Image */}
           <div className="bg-background absolute -top-10 flex h-[66px] w-[66px] items-center justify-center rounded-full">
             {props.fields.Avatar.value?.src || props.isPageEditing ? (
               <ContentSdkImage
@@ -35,6 +39,7 @@ const ReviewCard = (props: ReviewCardProps) => {
                 height={50}
                 field={props.fields.Avatar}
                 className="h-[50px] w-[50px] rounded-full"
+                editable={editable}
               />
             ) : (
               <div className="!text-foreground bg-background-muted flex h-[50px] w-[50px] items-center justify-center rounded-full">
@@ -46,14 +51,14 @@ const ReviewCard = (props: ReviewCardProps) => {
           </div>
           <div className="!text-background-muted-light">
             <div className="text-center text-xl leading-normal font-bold capitalize">
-              <Text field={props.fields.ReviewerName} />
+              <Text field={props.fields.ReviewerName} editable={editable} />
             </div>
             <div className="text-center text-sm leading-normal font-normal">
-              <Text field={props.fields.Caption} />
+              <Text field={props.fields.Caption} editable={editable} />
             </div>
           </div>
           <div className="!text-background-muted-light text-center text-sm leading-5 font-normal">
-            <Text field={props.fields.Description} />
+            <Text field={props.fields.Description} editable={editable} />
           </div>
           <StarRating rating={props.fields.Rating.value} />
         </div>

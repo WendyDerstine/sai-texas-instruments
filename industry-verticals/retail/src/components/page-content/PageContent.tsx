@@ -16,6 +16,7 @@ type PageContentProps = ComponentProps & {
 
 export const Default = ({ params, fields }: PageContentProps): JSX.Element => {
   const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const { styles, RenderingIdentifier: id } = params;
 
   const field = fields?.Content ?? (page.layout.sitecore.route?.fields?.Content as RichTextField);
@@ -24,7 +25,7 @@ export const Default = ({ params, fields }: PageContentProps): JSX.Element => {
     <div className={`component content ${styles}`} id={id}>
       <div className="component-content">
         <div className="field-content ck-content">
-          {field ? <ContentSdkRichText field={field} /> : '[Content]'}
+          {field ? <ContentSdkRichText field={field} editable={editable} /> : '[Content]'}
         </div>
       </div>
     </div>

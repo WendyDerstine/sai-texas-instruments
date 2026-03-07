@@ -45,6 +45,7 @@ interface ArticleListingProps extends ComponentProps {
 export const Default = (props: ArticleListingProps) => {
   const { t } = useI18n();
   const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const id = props.params.RenderingIdentifier;
   const searchBarPlaceholderKey = `article-listing-search-bar-${props.params.DynamicPlaceholderId}`;
   const recentPostsPlaceholderKey = `article-listing-side-bar-${props.params.DynamicPlaceholderId}`;
@@ -103,6 +104,7 @@ export const Default = (props: ArticleListingProps) => {
                   field={article.fields?.Title}
                   tag="h3"
                   className="font-semibold transition-colors"
+                  editable={editable}
                 />
 
                 {/* Icons */}
@@ -111,7 +113,10 @@ export const Default = (props: ArticleListingProps) => {
                   {(article.fields?.Author?.fields?.AuthorName?.value || isPageEditing) && (
                     <span className="flex items-center gap-2">
                       <FontAwesomeIcon icon={faUser as IconProp} />
-                      <ContentSdkText field={article.fields?.Author?.fields?.AuthorName} />
+                      <ContentSdkText
+                        field={article.fields?.Author?.fields?.AuthorName}
+                        editable={editable}
+                      />
                     </span>
                   )}
 
@@ -151,7 +156,10 @@ export const Default = (props: ArticleListingProps) => {
                   {(article.fields?.Category?.fields?.Category?.value || isPageEditing) && (
                     <span className="flex items-center gap-2">
                       <FontAwesomeIcon icon={faTag as IconProp} />
-                      <ContentSdkText field={article.fields?.Category?.fields?.Category} />
+                      <ContentSdkText
+                        field={article.fields?.Category?.fields?.Category}
+                        editable={editable}
+                      />
                     </span>
                   )}
                 </div>
@@ -161,6 +169,7 @@ export const Default = (props: ArticleListingProps) => {
                   field={article.fields?.ShortDescription}
                   tag="p"
                   className="line-clamp-5 text-justify text-lg"
+                  editable={editable}
                 />
 
                 {/* Read More Button */}

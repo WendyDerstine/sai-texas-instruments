@@ -26,6 +26,8 @@ interface HeroBannerProps extends ComponentProps {
   fields: Fields;
 }
 
+const DARK_REVERSED_HERO_STYLE = 'container-dark-background';
+
 const HeroBannerCommon = ({
   params,
   fields,
@@ -37,10 +39,20 @@ const HeroBannerCommon = ({
   const { styles, RenderingIdentifier: id } = params;
   const isPageEditing = page.mode.isEditing;
   const hideGradientOverlay = styles?.includes(HeroBannerStyles.HideGradientOverlay);
+  const isDarkReversedHero =
+    styles?.includes(DARK_REVERSED_HERO_STYLE) &&
+    styles?.includes(LayoutStyles.Reversed) &&
+    styles?.includes(CommonStyles.HideAccentLine);
+
+  const renderingId = id?.trim() || undefined;
 
   if (!fields) {
     return isPageEditing ? (
-      <div className={`component hero-banner ${styles}`} id={id}>
+      <div
+        className={`component hero-banner ${styles}`}
+        id={renderingId}
+        data-rendering-id={renderingId}
+      >
         [HERO BANNER]
       </div>
     ) : (
@@ -49,8 +61,15 @@ const HeroBannerCommon = ({
   }
 
   return (
-    <div className={`component hero-banner ${styles} relative flex items-center`} id={id}>
-      {/* Background Media */}
+    <div
+      className={clsx(
+        'component hero-banner relative flex min-h-[483px] w-full items-center',
+        styles
+      )}
+      id={renderingId}
+      data-rendering-id={renderingId}
+    >
+      {/* Background Media – image must stay clickable for inline editing */}
       <div className="absolute inset-0 z-0">
         {!isPageEditing && fields?.Video?.value?.src ? (
           <video
@@ -67,14 +86,27 @@ const HeroBannerCommon = ({
           <>
             <ContentSdkImage
               field={fields.Image}
-              className="h-full w-full object-cover md:object-bottom"
+              className={clsx(
+                'h-full w-full object-cover',
+                isDarkReversedHero ? 'object-right' : 'md:object-bottom'
+              )}
               priority
+              editable={isPageEditing}
             />
           </>
         )}
-        {/* Gradient overlay to fade image/video at bottom */}
-        {!hideGradientOverlay && (
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent from-85% to-white"></div>
+        {/* Gradient overlays – pointer-events-none so image and content stay clickable in editor */}
+        {!hideGradientOverlay && isDarkReversedHero && (
+          <div
+            className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(to_right,#000_0%,#000_45%,rgba(0,0,0,0.4)_70%,transparent_100%)]"
+            aria-hidden
+          />
+        )}
+        {!hideGradientOverlay && !isDarkReversedHero && (
+          <div
+            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent from-85% to-white"
+            aria-hidden
+          />
         )}
       </div>
 
@@ -84,43 +116,48 @@ const HeroBannerCommon = ({
 };
 
 export const Default = ({ params, fields, rendering }: HeroBannerProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const styles = params.styles || '';
   const hideAccentLine = styles.includes(CommonStyles.HideAccentLine);
   const withPlaceholder = styles.includes(HeroBannerStyles.WithPlaceholder);
   const reverseLayout = styles.includes(LayoutStyles.Reversed);
   const screenLayer = styles.includes(HeroBannerStyles.ScreenLayer);
   const searchBarPlaceholderKey = `hero-banner-search-bar-${params.DynamicPlaceholderId}`;
+  const isDarkReversedHero =
+    styles.includes(DARK_REVERSED_HERO_STYLE) && reverseLayout && hideAccentLine;
 
   return (
     <HeroBannerCommon params={params} fields={fields} rendering={rendering}>
-      {/* Content Container */}
-      <div className="relative w-full">
+      <div className={clsx('relative w-full', isDarkReversedHero && 'z-10')}>
         <div className="container mx-auto px-4">
           <div
-            className={`flex min-h-238 w-full py-10 lg:w-1/2 lg:items-center ${reverseLayout ? 'lg:mr-auto' : 'lg:ml-auto'}`}
+            className={`flex min-h-[483px] w-full py-10 lg:w-1/2 lg:items-center ${reverseLayout ? 'lg:mr-auto' : 'lg:ml-auto'}`}
           >
             <div className="max-w-182">
               <div className={clsx({ shim: screenLayer })}>
-                {/* Title */}
-                <h1 className="text-center text-5xl leading-[110%] font-bold capitalize md:text-7xl md:leading-[130%] lg:text-left xl:text-[80px]">
-                  <ContentSdkText field={fields.Title} />
+                <h1 className="text-center text-3xl leading-tight font-bold md:text-4xl lg:text-left lg:text-4xl xl:leading-[1.25]">
+                  <ContentSdkText field={fields.Title} editable={editable} />
                   {!hideAccentLine && <AccentLine className="mx-auto !h-5 w-[9ch] lg:mx-0" />}
                 </h1>
 
-                {/* Description */}
-                <div className="mt-7 text-xl md:text-2xl">
+                <div className="mt-4 text-base md:text-lg">
                   <ContentSdkRichText
                     field={fields.Description}
                     className="text-center lg:text-left"
+                    editable={editable}
                   />
                 </div>
 
-                {/* CTA Link or Placeholder */}
-                <div className="mt-6 flex w-full justify-center lg:justify-start">
+                <div className="mt-5 flex w-full justify-center lg:justify-start">
                   {withPlaceholder ? (
                     <Placeholder name={searchBarPlaceholderKey} rendering={rendering} />
                   ) : (
-                    <Link field={fields.CtaLink} className="arrow-btn" />
+                    <Link
+                      field={fields.CtaLink}
+                      className="arrow-btn hero-cta-btn"
+                      editable={editable}
+                    />
                   )}
                 </div>
               </div>
@@ -133,6 +170,8 @@ export const Default = ({ params, fields, rendering }: HeroBannerProps) => {
 };
 
 export const TopContent = ({ params, fields, rendering }: HeroBannerProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const styles = params.styles || '';
   const hideAccentLine = styles.includes(CommonStyles.HideAccentLine);
   const withPlaceholder = styles.includes(HeroBannerStyles.WithPlaceholder);
@@ -142,30 +181,34 @@ export const TopContent = ({ params, fields, rendering }: HeroBannerProps) => {
 
   return (
     <HeroBannerCommon params={params} fields={fields} rendering={rendering}>
-      {/* Content Container */}
       <div className="relative w-full">
-        <div className="container mx-auto flex min-h-238 justify-center px-4">
+        <div className="container mx-auto flex min-h-[483px] justify-center px-4">
           <div
             className={`flex flex-col items-center py-10 lg:py-44 ${reverseLayout ? 'justify-end' : 'justify-start'}`}
           >
             <div className={clsx({ shim: screenLayer })}>
-              {/* Title */}
-              <h1 className="text-center text-5xl leading-[110%] font-bold capitalize md:text-7xl md:leading-[130%] xl:text-[80px]">
-                <ContentSdkText field={fields.Title} />
+              <h1 className="text-center text-3xl leading-tight font-bold md:text-4xl xl:text-4xl xl:leading-[1.25]">
+                <ContentSdkText field={fields.Title} editable={editable} />
                 {!hideAccentLine && <AccentLine className="mx-auto !h-5 w-[9ch]" />}
               </h1>
 
-              {/* Description */}
-              <div className="mt-7 text-xl md:text-2xl">
-                <ContentSdkRichText field={fields.Description} className="text-center" />
+              <div className="mt-4 text-base md:text-lg">
+                <ContentSdkRichText
+                  field={fields.Description}
+                  className="text-center"
+                  editable={editable}
+                />
               </div>
 
-              {/* CTA Link or Placeholder */}
-              <div className="mt-6 flex w-full justify-center">
+              <div className="mt-5 flex w-full justify-center">
                 {withPlaceholder ? (
                   <Placeholder name={searchBarPlaceholderKey} rendering={rendering} />
                 ) : (
-                  <Link field={fields.CtaLink} className="arrow-btn" />
+                  <Link
+                    field={fields.CtaLink}
+                    className="arrow-btn hero-cta-btn"
+                    editable={editable}
+                  />
                 )}
               </div>
             </div>

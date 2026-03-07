@@ -1,5 +1,11 @@
 import React from 'react';
-import { Link as ContentSdkLink, Text, LinkField, TextField } from '@sitecore-content-sdk/nextjs';
+import {
+  Link as ContentSdkLink,
+  Text,
+  useSitecore,
+  LinkField,
+  TextField,
+} from '@sitecore-content-sdk/nextjs';
 import { ComponentProps } from 'lib/component-props';
 
 interface LinkListProps extends ComponentProps {
@@ -28,10 +34,12 @@ const LinkListItem = ({
   index,
   total,
   field,
+  editable,
 }: {
   index: number;
   total: number;
   field: LinkField;
+  editable: boolean;
 }) => {
   const classNames = [
     `item${index}`,
@@ -45,13 +53,15 @@ const LinkListItem = ({
   return (
     <li className={classNames}>
       <div className="field-link">
-        <ContentSdkLink field={field} />
+        <ContentSdkLink field={field} editable={editable} />
       </div>
     </li>
   );
 };
 
 export const Default = ({ params, fields }: LinkListProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const datasource = fields?.data?.datasource;
   const styles = `component link-list ${params.styles || ''}`.trim();
   const id = params.RenderingIdentifier;
@@ -69,12 +79,13 @@ export const Default = ({ params, fields }: LinkListProps) => {
           index={index}
           total={datasource.children.results.length}
           field={element.field.link}
+          editable={editable}
         />
       ));
 
     return (
       <>
-        <Text tag="h3" field={datasource.field?.title} />
+        <Text tag="h3" field={datasource.field?.title} editable={editable} />
         <ul>{links}</ul>
       </>
     );

@@ -78,7 +78,7 @@ export const Default = (props: OfferProps) => {
         >
           {datasource.map((offer) => (
             <SwiperSlide key={offer.id} className="no-swiping text-center">
-              <Text field={offer.fields.OfferText} />
+              <Text field={offer.fields.OfferText} editable={page.mode.isEditing} />
             </SwiperSlide>
           ))}
         </Swiper>

@@ -1,7 +1,14 @@
 import AccentLine from '@/assets/icons/accent-line/AccentLine';
 import { ComponentProps } from '@/lib/component-props';
 import { CommonStyles } from '@/types/styleFlags';
-import { Field, Link, LinkField, Placeholder, Text } from '@sitecore-content-sdk/nextjs';
+import {
+  Field,
+  Link,
+  LinkField,
+  Placeholder,
+  Text,
+  useSitecore,
+} from '@sitecore-content-sdk/nextjs';
 
 interface Fields {
   Title: Field<string>;
@@ -13,6 +20,8 @@ interface SectionWrapperProps extends ComponentProps {
 }
 
 export const Default = ({ params, fields, rendering }: SectionWrapperProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const { styles, RenderingIdentifier: id } = params;
   const hideAccentLine = styles?.includes(CommonStyles.HideAccentLine);
   const placeholderKey = `section-wrapper-content-${params.DynamicPlaceholderId}`;
@@ -21,7 +30,7 @@ export const Default = ({ params, fields, rendering }: SectionWrapperProps) => {
     <section className={`component section-wrapper pt-14 pb-10 ${styles}`} id={id}>
       <div className="container flex flex-col items-center">
         <h2>
-          <Text field={fields.Title} />
+          <Text field={fields.Title} editable={editable} />
           {!hideAccentLine && <AccentLine className="ml-auto !h-4 w-[8ch]" />}
         </h2>
 
@@ -29,7 +38,7 @@ export const Default = ({ params, fields, rendering }: SectionWrapperProps) => {
           <Placeholder name={placeholderKey} rendering={rendering} />
         </div>
 
-        <Link field={fields.Link} className="arrow-btn" />
+        <Link field={fields.Link} className="arrow-btn" editable={editable} />
       </div>
     </section>
   );

@@ -9,6 +9,7 @@ import {
   NextImage as ContentSdkImage,
   RichText as ContentSdkRichText,
   Text,
+  useSitecore,
 } from '@sitecore-content-sdk/nextjs';
 import AccentLine from '@/assets/icons/accent-line/AccentLine';
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';
@@ -32,6 +33,8 @@ export type CarouselProps = ComponentProps & {
 };
 
 export const Default = (props: CarouselProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const id = props.params.RenderingIdentifier;
@@ -82,15 +85,19 @@ export const Default = (props: CarouselProps) => {
         >
           <div className="w-full space-y-5 md:w-1/3">
             <h2 className="inline-block max-w-md">
-              <Text field={props.fields.Title} />
+              <Text field={props.fields.Title} editable={editable} />
               {!hideAccentLine && <AccentLine className="w-full max-w-xs" />}
             </h2>
 
             <div className="max-w-md">
-              <ContentSdkRichText field={props.fields.Description} />
+              <ContentSdkRichText field={props.fields.Description} editable={editable} />
             </div>
 
-            <ContentSskLink field={props.fields.ExploreLink} className="arrow-btn" />
+            <ContentSskLink
+              field={props.fields.ExploreLink}
+              className="arrow-btn"
+              editable={editable}
+            />
           </div>
 
           <div className={cn('w-full', 'md:w-2/3', 'lg:transform', translateClass)}>

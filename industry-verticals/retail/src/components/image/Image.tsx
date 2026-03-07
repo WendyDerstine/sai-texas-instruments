@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Field,
   ImageField,
@@ -9,6 +11,7 @@ import {
 } from '@sitecore-content-sdk/nextjs';
 import React from 'react';
 import { ComponentProps } from 'lib/component-props';
+import { useHeaderLogo } from '@/contexts/HeaderLogoContext';
 
 interface ImageFields {
   Image: ImageField;
@@ -20,13 +23,16 @@ interface ImageProps extends ComponentProps {
   fields: ImageFields;
 }
 
-const ImageWrapper: React.FC<{ className: string; id?: string; children: React.ReactNode }> = ({
-  className,
-  id,
-  children,
-}) => (
+const ImageWrapper: React.FC<{
+  className: string;
+  id?: string;
+  children: React.ReactNode;
+  centerContent?: boolean;
+}> = ({ className, id, children, centerContent }) => (
   <div className={className.trim()} id={id}>
-    <div className="component-content">{children}</div>
+    <div className={`component-content${centerContent ? 'flex items-center' : ''}`.trim()}>
+      {children}
+    </div>
   </div>
 );
 
@@ -38,6 +44,7 @@ const ImageDefault: React.FC<ImageProps> = ({ params }) => (
 
 export const Default: React.FC<ImageProps> = (props) => {
   const { page } = useSitecore();
+  const isInHeaderLogo = useHeaderLogo();
   const { fields, params } = props;
   const { styles, RenderingIdentifier: id } = params;
 
@@ -45,11 +52,22 @@ export const Default: React.FC<ImageProps> = (props) => {
     return <ImageDefault {...props} />;
   }
 
-  const Image = () => <ContentSdkImage field={fields.Image} />;
+  const imgValue = fields.Image?.value;
+  const width = (imgValue as { width?: number })?.width ?? 120;
+  const height = (imgValue as { height?: number })?.height ?? 40;
+  const editable = page.mode.isEditing;
+  const Image = () => (
+    <ContentSdkImage field={fields.Image} width={width} height={height} editable={editable} />
+  );
   const shouldWrapWithLink = !page.mode.isEditing && fields.TargetUrl?.value?.href;
+  const isLogo = isInHeaderLogo || params.Display === 'Logo';
 
   return (
-    <ImageWrapper className={`component image ${styles}`} id={id}>
+    <ImageWrapper
+      className={`component image ${styles} ${isLogo ? 'flex items-center' : ''}`.trim()}
+      id={id}
+      centerContent={isLogo}
+    >
       {shouldWrapWithLink ? (
         <ContentSdkLink field={fields.TargetUrl}>
           <Image />
@@ -57,7 +75,14 @@ export const Default: React.FC<ImageProps> = (props) => {
       ) : (
         <Image />
       )}
-      <Text tag="span" className="image-caption" field={fields.ImageCaption} />
+      {!isLogo && (
+        <Text
+          tag="span"
+          className="image-caption"
+          field={fields.ImageCaption}
+          editable={editable}
+        />
+      )}
     </ImageWrapper>
   );
 };
