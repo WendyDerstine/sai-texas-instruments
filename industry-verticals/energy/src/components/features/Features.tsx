@@ -5,6 +5,7 @@ import {
   Text as ContentSdkText,
   NextImage as ContentSdkImage,
   Link as ContentSdkLink,
+  useSitecore,
   withDatasourceCheck,
   ComponentRendering,
   ComponentParams,
@@ -40,9 +41,11 @@ type FeaturesProps = {
 const FeatureItem = ({
   feature,
   layout = 'vertical',
+  editable = false,
 }: {
   feature: FeatureFields;
   layout: 'vertical' | 'horizontal';
+  editable?: boolean;
 }) => {
   if (layout === 'horizontal') {
     // Card variant: horizontal layout with button
@@ -52,17 +55,22 @@ const FeatureItem = ({
           <ContentSdkImage
             field={feature?.featureImage?.jsonValue}
             className="h-8 w-8 flex-shrink-0 object-contain"
+            editable={editable}
           />
           <h5 className="text-base leading-none font-bold">
-            <ContentSdkText field={feature?.featureTitle?.jsonValue} />
+            <ContentSdkText field={feature?.featureTitle?.jsonValue} editable={editable} />
           </h5>
         </div>
         <p>
-          <ContentSdkText field={feature?.featureDescription?.jsonValue} />
+          <ContentSdkText field={feature?.featureDescription?.jsonValue} editable={editable} />
         </p>
         {feature?.featureLink?.jsonValue ? (
           <div className="mt-2">
-            <ContentSdkLink field={feature.featureLink.jsonValue} className="outline-btn" />
+            <ContentSdkLink
+              field={feature.featureLink.jsonValue}
+              className="outline-btn"
+              editable={editable}
+            />
           </div>
         ) : null}
       </li>
@@ -80,14 +88,15 @@ const FeatureItem = ({
           <ContentSdkImage
             field={feature?.featureImage?.jsonValue}
             className="h-full w-full object-contain"
+            editable={editable}
           />
         </div>
         <div className="flex-1">
           <h5 className="mb-2 text-base font-semibold">
-            <ContentSdkText field={feature?.featureTitle?.jsonValue} />
+            <ContentSdkText field={feature?.featureTitle?.jsonValue} editable={editable} />
           </h5>
           <p className="text-foreground-light">
-            <ContentSdkText field={feature?.featureDescription?.jsonValue} />
+            <ContentSdkText field={feature?.featureDescription?.jsonValue} editable={editable} />
           </p>
         </div>
       </div>
@@ -96,6 +105,8 @@ const FeatureItem = ({
 };
 
 const DefaultFeatures = ({ fields, params }: FeaturesProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const id = params?.RenderingIdentifier;
   const features = fields?.data?.datasource?.children?.results;
 
@@ -103,12 +114,20 @@ const DefaultFeatures = ({ fields, params }: FeaturesProps) => {
     <section className={`relative py-10 lg:py-16 ${params?.styles || ''}`} id={id || undefined}>
       <div className="container">
         <h2 className="mb-4 text-center text-3xl font-bold">
-          <ContentSdkText field={fields?.data?.datasource?.title?.jsonValue} />
+          <ContentSdkText
+            field={fields?.data?.datasource?.title?.jsonValue}
+            editable={editable}
+          />
         </h2>
 
         <ul className="mt-12 grid gap-6 lg:grid-cols-2">
           {features?.map((feature) => (
-            <FeatureItem key={feature.id} feature={feature} layout="vertical" />
+            <FeatureItem
+              key={feature.id}
+              feature={feature}
+              layout="vertical"
+              editable={editable}
+            />
           ))}
         </ul>
       </div>
@@ -117,6 +136,8 @@ const DefaultFeatures = ({ fields, params }: FeaturesProps) => {
 };
 
 const CardFeatures = ({ fields, params }: FeaturesProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const id = params?.RenderingIdentifier;
   const features = fields?.data?.datasource?.children?.results;
 
@@ -124,11 +145,19 @@ const CardFeatures = ({ fields, params }: FeaturesProps) => {
     <div className={`relative py-10 lg:py-16 ${params?.styles || ''}`} id={id || undefined}>
       <div className="container">
         <h2 className="mb-6 text-3xl font-bold">
-          <ContentSdkText field={fields?.data?.datasource?.title?.jsonValue} />
+          <ContentSdkText
+            field={fields?.data?.datasource?.title?.jsonValue}
+            editable={editable}
+          />
         </h2>
         <ul className="grid gap-6 lg:grid-cols-3">
           {features?.map((feature) => (
-            <FeatureItem key={feature.id} feature={feature} layout="horizontal" />
+            <FeatureItem
+              key={feature.id}
+              feature={feature}
+              layout="horizontal"
+              editable={editable}
+            />
           ))}
         </ul>
       </div>

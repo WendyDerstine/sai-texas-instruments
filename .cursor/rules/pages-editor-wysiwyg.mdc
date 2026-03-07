@@ -1,0 +1,61 @@
+---
+description: Require editable prop on SDK field components so Pages editor WYSIWYG works
+alwaysApply: false
+globs:
+  - "industry-verticals/**/src/components/**/*.tsx"
+---
+
+# Pages Editor WYSIWYG (Inline Editing)
+
+When creating or editing components that render Sitecore content, **always** enable Pages editor WYSIWYG by passing the `editable` prop to every field component from the Content SDK.
+
+## Required Pattern
+
+1. **Get editing state** in the component (or in each exported variant that renders fields):
+   - Call `useSitecore()` from `@sitecore-content-sdk/nextjs`.
+   - Derive: `const editable = page?.mode?.isEditing ?? false;`
+
+2. **Pass `editable` to every SDK field component** used for content:
+   - `<Text field={...} editable={editable} />`
+   - `<RichText field={...} editable={editable} />`
+   - `<Image field={...} editable={editable} />` (and `NextImage` / `ContentSdkImage` if used)
+   - `<Link field={...} editable={editable}>...</Link>`
+
+Without `editable={editable}`, fields render in the Pages editor but are **not** click-to-edit. The app already forces `page.mode.isEditing = true` when the page is opened from the editor (in `getStaticProps`); components must pass that through to the SDK components.
+
+## ✅ Correct
+
+```tsx
+import { Text, Image, Link, useSitecore } from '@sitecore-content-sdk/nextjs';
+
+export const Default = (props: MyProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
+
+  return (
+    <section>
+      <h2><Text field={props.fields.title} editable={editable} /></h2>
+      <Image field={props.fields.photo} editable={editable} />
+      <Link field={props.fields.cta} editable={editable}>Read more</Link>
+    </section>
+  );
+};
+```
+
+## ❌ Incorrect (no WYSIWYG in Pages editor)
+
+```tsx
+<Text field={props.fields.title} />
+<Image field={props.fields.photo} />
+<Link field={props.fields.cta}>Read more</Link>
+```
+
+## Shared wrappers and child components
+
+- If a **wrapper** (e.g. `FeaturesWrapper`) renders `Text`/`RichText`/`Image`/`Link`, it must call `useSitecore()`, set `editable`, and pass `editable` to those components.
+- If a **child component** (e.g. `FeatureItem`) receives fields and renders SDK field components, pass `editable` in as a prop from the parent that has `useSitecore()`.
+
+## Checklist for new or changed components
+
+- [ ] Component (or each variant) uses `useSitecore()` and `editable = page?.mode?.isEditing ?? false`.
+- [ ] Every `Text`, `RichText`, `Image`, and `Link` from `@sitecore-content-sdk/nextjs` receives `editable={editable}` (or the prop passed down).

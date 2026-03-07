@@ -1,5 +1,12 @@
 import { ComponentProps } from '@/lib/component-props';
-import { Field, Link, LinkField, Placeholder, Text } from '@sitecore-content-sdk/nextjs';
+import {
+  Field,
+  Link,
+  LinkField,
+  Placeholder,
+  Text,
+  useSitecore,
+} from '@sitecore-content-sdk/nextjs';
 
 interface Fields {
   Title: Field<string>;
@@ -12,6 +19,8 @@ interface SectionWrapperProps extends ComponentProps {
 }
 
 export const Default = ({ params, fields, rendering }: SectionWrapperProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const { styles, RenderingIdentifier: id } = params;
   const searchbarPlaceholderKey = `section-wrapper-searchbar-${params.DynamicPlaceholderId}`;
   const componentPlaceholderKey = `section-wrapper-content-${params.DynamicPlaceholderId}`;
@@ -22,12 +31,12 @@ export const Default = ({ params, fields, rendering }: SectionWrapperProps) => {
         <div className="grid gap-8 lg:grid-cols-4">
           <div className="space-y-8 lg:col-span-3">
             <h2>
-              <Text field={fields.Title} />
+              <Text field={fields.Title} editable={editable} />
             </h2>
             <p className="text-xl">
-              <Text field={fields.Description} />
+              <Text field={fields.Description} editable={editable} />
             </p>
-            <Link field={fields.Link} className="outline-btn justify-self-start" />
+            <Link field={fields.Link} className="outline-btn justify-self-start" editable={editable} />
           </div>
           <div className="max-lg:order-last">
             <Placeholder name={searchbarPlaceholderKey} rendering={rendering} />

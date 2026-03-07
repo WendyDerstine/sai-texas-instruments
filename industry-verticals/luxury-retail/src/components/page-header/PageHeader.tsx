@@ -26,16 +26,18 @@ export const Default = ({ params, fields, rendering }: PageContentProps): JSX.El
   const content = fields?.Content ?? (page.layout.sitecore.route?.fields?.Content as RichTextField);
   const searchbarPlaceholderKey = `page-header-searchbar-${params.DynamicPlaceholderId}`;
 
+  const editable = page?.mode?.isEditing ?? false;
+
   return (
     <section className={`component page-header py-18 ${styles}`} id={id}>
       <div className="container">
         <div className="grid gap-8 lg:grid-cols-4">
           <div className="space-y-8 lg:col-span-3">
             <h2>
-              <Text field={title} />
+              <Text field={title} editable={editable} />
             </h2>
             <div className="text-lg">
-              <RichText field={content} />
+              <RichText field={content} editable={editable} />
             </div>
           </div>
           <div className="max-lg:order-last">

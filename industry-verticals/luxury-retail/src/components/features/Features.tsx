@@ -51,7 +51,8 @@ const FeatureWrapper = (wrapperProps: FeatureWrapperProps) => {
 
 export const Default = (props: FeaturesProps) => {
   const { page } = useSitecore();
-  const isPageEditing = page.mode.isEditing;
+  const editable = page?.mode?.isEditing ?? false;
+  const isPageEditing = editable;
   const { title, description } = props.fields.data.datasource;
   const results = props.fields.data.datasource.children.results;
 
@@ -62,12 +63,12 @@ export const Default = (props: FeaturesProps) => {
         <div className="mb-10">
           {(title?.jsonValue || isPageEditing) && (
             <h2 className="text-4xl md:text-5xl">
-              <Text field={title.jsonValue} />
+              <Text field={title.jsonValue} editable={editable} />
             </h2>
           )}
           {(description?.jsonValue || isPageEditing) && (
             <p className="mt-2 text-base">
-              <Text field={description.jsonValue} />
+              <Text field={description.jsonValue} editable={editable} />
             </p>
           )}
         </div>
@@ -85,22 +86,29 @@ export const Default = (props: FeaturesProps) => {
                   <Image
                     field={image}
                     className="h-full w-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
+                    editable={editable}
                   />
                 </div>
 
                 <h3 className="text-2xl md:text-3xl">
-                  <Text field={title} />
+                  <Text field={title} editable={editable} />
                 </h3>
 
                 <p className="mt-2 text-base md:text-lg">
-                  <Text field={description} />
+                  <Text field={description} editable={editable} />
                 </p>
               </>
             );
 
             return (
               <div key={index}>
-                {link?.value?.href ? <Link field={link}>{content}</Link> : <div>{content}</div>}
+                {link?.value?.href ? (
+                  <Link field={link} editable={editable}>
+                    {content}
+                  </Link>
+                ) : (
+                  <div>{content}</div>
+                )}
               </div>
             );
           })}
@@ -111,6 +119,8 @@ export const Default = (props: FeaturesProps) => {
 };
 
 export const FourColGrid = (props: FeaturesProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const results = props.fields.data.datasource.children.results;
 
   return (
@@ -123,11 +133,11 @@ export const FourColGrid = (props: FeaturesProps) => {
           return (
             <div key={index} className="flex flex-col justify-center">
               <h3 className="text-xl font-bold">
-                <Text field={title} />
+                <Text field={title} editable={editable} />
               </h3>
 
               <p className="mt-2 text-base">
-                <Text field={description} />
+                <Text field={description} editable={editable} />
               </p>
             </div>
           );

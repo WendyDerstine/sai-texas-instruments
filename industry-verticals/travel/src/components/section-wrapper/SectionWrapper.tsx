@@ -1,5 +1,11 @@
 import { ComponentProps } from '@/lib/component-props';
-import { Field, LinkField, Placeholder, Text } from '@sitecore-content-sdk/nextjs';
+import {
+  Field,
+  LinkField,
+  Placeholder,
+  Text,
+  useSitecore,
+} from '@sitecore-content-sdk/nextjs';
 
 interface Fields {
   Title: Field<string>;
@@ -12,6 +18,8 @@ interface SectionWrapperProps extends ComponentProps {
 }
 
 export const Default = ({ params, fields, rendering }: SectionWrapperProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const { styles, RenderingIdentifier: id } = params;
   const componentPlaceholderKey = `section-wrapper-content-${params.DynamicPlaceholderId}`;
 
@@ -20,10 +28,10 @@ export const Default = ({ params, fields, rendering }: SectionWrapperProps) => {
       <div className="container">
         <div className="mb-12 space-y-4 text-center">
           <h2>
-            <Text field={fields.Title} />
+            <Text field={fields.Title} editable={editable} />
           </h2>
           <p className="text-foreground-light text-xl">
-            <Text field={fields.Description} />
+            <Text field={fields.Description} editable={editable} />
           </p>
         </div>
       </div>

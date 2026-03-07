@@ -85,6 +85,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
       ? await client.getPreview(context.previewData)
       : await client.getPage(path, { locale: context.locale });
   }
+  // Ensure Pages editor gets WYSIWYG: when in preview (opened from editor), force editing mode
+  // so that SDK Text/RichText/Image/Link components receive editable={true}.
+  if (page && context.preview && !isDesignLibraryPreviewData(context.previewData)) {
+    page = {
+      ...page,
+      mode: { ...page.mode, isEditing: true },
+    };
+  }
   if (page) {
     props = {
       page,

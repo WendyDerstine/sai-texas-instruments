@@ -1,6 +1,12 @@
 import { ComponentProps } from '@/lib/component-props';
 import { IGQLField, IGQLTextField } from '@/types/igql';
-import { Text, NextImage as Image, LinkField, ImageField } from '@sitecore-content-sdk/nextjs';
+import {
+  Text,
+  NextImage as Image,
+  LinkField,
+  ImageField,
+  useSitecore,
+} from '@sitecore-content-sdk/nextjs';
 import React from 'react';
 interface Fields {
   data: {
@@ -28,6 +34,8 @@ type FeaturesProps = ComponentProps & {
 type FeaturesWrapperProps = React.PropsWithChildren<FeaturesProps>;
 
 const FeaturesWrapper = ({ children, ...props }: FeaturesWrapperProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const id = props.params.RenderingIdentifier;
   const hideTitleSection = props.params?.styles?.includes('hide-title-section');
 
@@ -37,10 +45,16 @@ const FeaturesWrapper = ({ children, ...props }: FeaturesWrapperProps) => {
         {!hideTitleSection && (
           <div className="mb-12 text-center">
             <h2 className="mb-4">
-              <Text field={props.fields.data.datasource.title.jsonValue} />
+              <Text
+                field={props.fields.data.datasource.title.jsonValue}
+                editable={editable}
+              />
             </h2>
             <p className="text-foreground-light text-xl">
-              <Text field={props.fields.data.datasource.description.jsonValue} />
+              <Text
+                field={props.fields.data.datasource.description.jsonValue}
+                editable={editable}
+              />
             </p>
           </div>
         )}
@@ -51,6 +65,8 @@ const FeaturesWrapper = ({ children, ...props }: FeaturesWrapperProps) => {
 };
 
 export const Default = (props: FeaturesProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const features = props.fields.data.datasource.children.results;
 
   return (
@@ -61,12 +77,16 @@ export const Default = (props: FeaturesProps) => {
             className="flex min-w-1/4 grow basis-full flex-col items-center gap-2 px-3 text-center @md:basis-1/2 @3xl:basis-1/4"
             key={i}
           >
-            <Image field={f.featureImage.jsonValue} className="size-12 object-contain" />
+            <Image
+              field={f.featureImage.jsonValue}
+              className="size-12 object-contain"
+              editable={editable}
+            />
             <h5 className="mt-2">
-              <Text field={f.featureTitle.jsonValue} />
+              <Text field={f.featureTitle.jsonValue} editable={editable} />
             </h5>
             <p>
-              <Text field={f.featureDescription.jsonValue} />
+              <Text field={f.featureDescription.jsonValue} editable={editable} />
             </p>
           </div>
         );
@@ -76,6 +96,8 @@ export const Default = (props: FeaturesProps) => {
 };
 
 export const Simple = (props: FeaturesProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const features = props.fields.data.datasource.children.results;
 
   return (
@@ -86,9 +108,13 @@ export const Simple = (props: FeaturesProps) => {
             className="flex min-w-1/6 grow basis-1/2 flex-col items-center gap-2 px-3 text-center @md:basis-1/3 @3xl:basis-1/6"
             key={i}
           >
-            <Image field={f.featureImage.jsonValue} className="size-6 object-contain" />
+            <Image
+              field={f.featureImage.jsonValue}
+              className="size-6 object-contain"
+              editable={editable}
+            />
             <h5 className="text-foreground-light text-sm font-semibold">
-              <Text field={f.featureTitle.jsonValue} />
+              <Text field={f.featureTitle.jsonValue} editable={editable} />
             </h5>
           </div>
         );
@@ -98,6 +124,8 @@ export const Simple = (props: FeaturesProps) => {
 };
 
 export const Stats = (props: FeaturesProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const features = props.fields.data.datasource.children.results;
 
   return (
@@ -107,10 +135,10 @@ export const Stats = (props: FeaturesProps) => {
           <div className="min-w-1/4 grow basis-full px-3 @md:basis-1/2 @3xl:basis-1/4" key={i}>
             <div className="bg-background-accent flex flex-col items-center gap-2 rounded-md p-6 text-center">
               <h3 className="text-accent">
-                <Text field={f.featureTitle.jsonValue} />
+                <Text field={f.featureTitle.jsonValue} editable={editable} />
               </h3>
               <p>
-                <Text field={f.featureDescription.jsonValue} />
+                <Text field={f.featureDescription.jsonValue} editable={editable} />
               </p>
             </div>
           </div>
@@ -121,6 +149,8 @@ export const Stats = (props: FeaturesProps) => {
 };
 
 export const Card = (props: FeaturesProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const features = props.fields.data.datasource.children.results;
 
   return (
@@ -129,13 +159,17 @@ export const Card = (props: FeaturesProps) => {
         return (
           <div className="min-w-1/3 grow basis-full px-3 @3xl:basis-1/3" key={i}>
             <div className="flex h-full flex-col overflow-hidden rounded-lg border shadow-sm">
-              <Image field={f.featureImage.jsonValue} className="h-48 w-full object-cover" />
+              <Image
+                field={f.featureImage.jsonValue}
+                className="h-48 w-full object-cover"
+                editable={editable}
+              />
               <div className="space-y-2 p-6">
                 <h5>
-                  <Text field={f.featureTitle.jsonValue} />
+                  <Text field={f.featureTitle.jsonValue} editable={editable} />
                 </h5>
                 <p>
-                  <Text field={f.featureDescription.jsonValue} />
+                  <Text field={f.featureDescription.jsonValue} editable={editable} />
                 </p>
               </div>
             </div>
@@ -147,6 +181,8 @@ export const Card = (props: FeaturesProps) => {
 };
 
 export const LargeImage = (props: FeaturesProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
   const features = props.fields.data.datasource.children.results;
 
   return (
@@ -158,13 +194,14 @@ export const LargeImage = (props: FeaturesProps) => {
               <Image
                 field={f.featureImage.jsonValue}
                 className="absolute inset-0 h-full w-full object-cover"
+                editable={editable}
               />
               <div className="*:text-background relative z-10 space-y-2">
                 <h4>
-                  <Text field={f.featureTitle.jsonValue} />
+                  <Text field={f.featureTitle.jsonValue} editable={editable} />
                 </h4>
                 <p>
-                  <Text field={f.featureDescription.jsonValue} />
+                  <Text field={f.featureDescription.jsonValue} editable={editable} />
                 </p>
               </div>
             </div>
