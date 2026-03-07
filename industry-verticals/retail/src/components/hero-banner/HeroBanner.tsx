@@ -43,6 +43,7 @@ const HeroBannerCommon = ({
     styles?.includes(DARK_REVERSED_HERO_STYLE) &&
     styles?.includes(LayoutStyles.Reversed) &&
     styles?.includes(CommonStyles.HideAccentLine);
+  const isDarkBackground = styles?.includes(DARK_REVERSED_HERO_STYLE);
 
   const renderingId = id?.trim() || undefined;
 
@@ -104,7 +105,12 @@ const HeroBannerCommon = ({
         )}
         {!hideGradientOverlay && !isDarkReversedHero && (
           <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent from-85% to-white"
+            className={clsx(
+              'pointer-events-none absolute inset-0 z-[1]',
+              isDarkBackground
+                ? 'bg-[linear-gradient(to_left,#000_0%,#000_45%,rgba(0,0,0,0.4)_70%,transparent_100%)]'
+                : 'bg-[linear-gradient(to_left,#fff_0%,#fff_45%,rgba(255,255,255,0.4)_70%,transparent_100%)]'
+            )}
             aria-hidden
           />
         )}

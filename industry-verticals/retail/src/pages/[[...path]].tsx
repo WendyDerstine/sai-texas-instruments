@@ -13,7 +13,7 @@ import {
 import { extractPath, handleEditorFastRefresh } from '@sitecore-content-sdk/nextjs/utils';
 import { isDesignLibraryPreviewData } from '@sitecore-content-sdk/nextjs/editing';
 import client from 'lib/sitecore-client';
-import components from '@/lib/component-map-with-style-watcher';
+import components from '.sitecore/component-map';
 import scConfig from 'sitecore.config';
 
 const SitecorePage = ({ page, notFound, componentProps }: SitecorePageProps): JSX.Element => {
