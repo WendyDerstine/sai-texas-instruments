@@ -16,14 +16,14 @@ import { faFacebookF, faInstagram, faLinkedin, faTwitter, faYoutube } from '@for
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FacebookIcon, InstagramIcon, LinkedinIcon, TwitterIcon, YoutubeIcon } from '@/assets/icons/social/social';
 import { isParamEnabled } from '@/helpers/isParamEnabled';
-import AccentLine from '@/assets/icons/accent-line/AccentLine';
 import ProductCarousel from 'src/components/non-sitecore/ProductCarousel';
-import { CommonStyles, LayoutStyles, PromoFlags, HeroBannerStyles } from '@/types/styleFlags';
+import AccentLine from '@/assets/icons/accent-line/AccentLine';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation, A11y, Keyboard } from 'swiper/modules';
 import { ArrowRight, ChevronLeft, ChevronRight, ChevronDown, Heart, Plus, Star, User, X, Check, Loader2, LoaderCircle, ShoppingCart, Search, Globe, MoreHorizontal, Home } from 'lucide-react';
 import Link_a258c208ba01265ca0aa9c7abae745cc7141aa63 from 'next/link';
 import { cn } from '@/shadcn/lib/utils';
+import { CommonStyles, LayoutStyles, PromoFlags, HeroBannerStyles } from '@/types/styleFlags';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import QuestionsAnswers from 'src/components/non-sitecore/search/QuestionsAnswers';
 import SearchResultsWidget from 'src/components/non-sitecore/search/SearchResultsComponent';
@@ -169,24 +169,15 @@ const importMap = [
     ]
   },
   {
-    module: '@/assets/icons/accent-line/AccentLine',
-    exports: [
-      { name: 'default', value: AccentLine },
-    ]
-  },
-  {
     module: 'src/components/non-sitecore/ProductCarousel',
     exports: [
       { name: 'default', value: ProductCarousel },
     ]
   },
   {
-    module: '@/types/styleFlags',
+    module: '@/assets/icons/accent-line/AccentLine',
     exports: [
-      { name: 'CommonStyles', value: CommonStyles },
-      { name: 'LayoutStyles', value: LayoutStyles },
-      { name: 'PromoFlags', value: PromoFlags },
-      { name: 'HeroBannerStyles', value: HeroBannerStyles },
+      { name: 'default', value: AccentLine },
     ]
   },
   {
@@ -238,6 +229,15 @@ const importMap = [
     module: '@/shadcn/lib/utils',
     exports: [
       { name: 'cn', value: cn },
+    ]
+  },
+  {
+    module: '@/types/styleFlags',
+    exports: [
+      { name: 'CommonStyles', value: CommonStyles },
+      { name: 'LayoutStyles', value: LayoutStyles },
+      { name: 'PromoFlags', value: PromoFlags },
+      { name: 'HeroBannerStyles', value: HeroBannerStyles },
     ]
   },
   {

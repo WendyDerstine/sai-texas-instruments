@@ -88,6 +88,44 @@
   }
 }
 
+/* Red background: red section, white text; "More Info" links red with white text/arrow */
+.container-red-background {
+  > .component-content {
+    @apply border-accent;
+  }
+
+  &:not(.container),
+  &.container > .component-content {
+    @apply bg-accent border-accent text-background;
+
+    * {
+      @apply text-inherit;
+    }
+
+    /* More Info links with arrow: red background, white text and arrow */
+    .arrow-btn {
+      @apply border-b-background bg-accent text-background;
+
+      &::after {
+        @apply bg-background;
+      }
+    }
+
+    .hero-cta-btn {
+      @apply border-background bg-accent text-background;
+    }
+
+    .main-btn,
+    .promo-more-info-btn {
+      @apply bg-background text-accent hover:bg-background-muted hover:text-accent;
+    }
+
+    .action-btn {
+      @apply border-background bg-background text-accent hover:bg-background-muted hover:border-background-muted hover:text-accent;
+    }
+  }
+}
+
 /* Spacing */
 /* Using padding for the sides so it doesn't break the grid widths */
 .indent {
@@ -130,7 +168,8 @@
   text-align-last: center !important;
 }
 
-.container-dark-background .shim {
+.container-dark-background .shim,
+.container-red-background .shim {
   background: rgba(0, 0, 0, 0.4);
   padding: 50px;
 }
@@ -138,4 +177,9 @@
 .shim {
   background: rgba(255, 255, 255, 0.4);
   padding: 50px;
+}
+
+/* Selected products / Related products: center carousel slides when fewer than visible */
+.related-products .swiper-wrapper {
+  justify-content: center;
 }

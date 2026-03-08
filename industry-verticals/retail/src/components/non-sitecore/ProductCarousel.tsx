@@ -7,12 +7,15 @@ import { SitecoreItem } from '@/types/common';
 import CarouselButton from './CarouselButton';
 import { calculateAverageRating } from '@/helpers/productUtils';
 
+type ProductCardVariant = 'default' | 'compact';
+
 interface ProductCarouselProps {
   products: SitecoreItem<Product>[];
   loop?: boolean;
   autoPlay?: boolean;
   autoPlayDelay?: number;
   className?: string;
+  cardVariant?: ProductCardVariant;
 }
 
 const ProductCarousel = ({
@@ -21,6 +24,7 @@ const ProductCarousel = ({
   autoPlay = true,
   autoPlayDelay = 5000,
   className = '',
+  cardVariant = 'default',
 }: ProductCarouselProps) => {
   const uid = useId();
 
@@ -69,6 +73,7 @@ const ProductCarousel = ({
                   Rating: calculateAverageRating(product.fields.Reviews || []),
                 }}
                 url={product.url}
+                variant={cardVariant}
               />
             </SwiperSlide>
           ))}

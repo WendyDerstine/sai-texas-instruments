@@ -9,13 +9,21 @@ export const backgroundColorArgTypes: ArgTypes = {
   BackgroundColor: {
     control: 'select',
     name: 'Background Color',
-    options: ['', 'Clean background', 'Color background', 'Dark background', 'Gray background'],
+    options: [
+      '',
+      'Clean background',
+      'Color background',
+      'Dark background',
+      'Gray background',
+      'Red background',
+    ],
     mapping: {
       '': '',
       'Clean background': 'container-clean-background',
       'Color background': 'container-color-background',
       'Dark background': 'container-dark-background',
       'Gray background': 'container-gray-background',
+      'Red background': 'container-red-background',
     },
   },
 };
