@@ -76,6 +76,16 @@
   &.container > .component-content {
     @apply bg-background-muted border-background-muted;
   }
+
+  /* FourColGrid variant: white text and icons on gray background */
+  .features-fourcolgrid__item-title,
+  .features-fourcolgrid__item-description {
+    @apply text-background;
+  }
+
+  .features-fourcolgrid__item-icon img {
+    filter: brightness(0) invert(1);
+  }
 }
 
 /* Spacing */

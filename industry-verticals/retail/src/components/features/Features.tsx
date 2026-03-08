@@ -191,21 +191,21 @@ export const FourColGrid = (props: FeaturesProps) => {
 
   return (
     <FeatureWrapper props={props}>
-      <div className="container grid grid-cols-1 gap-20 py-24 md:grid-cols-2 lg:grid-cols-4 lg:gap-10">
+      <div className="features-fourcolgrid container grid grid-cols-1 gap-8 py-5 md:grid-cols-2 lg:grid-cols-4 lg:gap-6 lg:py-6">
         {results.map((item, index) => {
           const title = item.featureTitle.jsonValue;
           const description = item.featureDescription.jsonValue;
           const image = item.featureImage.jsonValue;
           return (
-            <div className="grid grid-cols-[1fr_2fr] gap-2.5" key={index}>
-              <div className="flex items-center justify-center rounded-full">
-                <Image field={image} editable={editable} />
+            <div className="flex flex-row items-center gap-3" key={index}>
+              <div className="features-fourcolgrid__item-icon flex h-7 w-7 flex-shrink-0 items-center justify-center">
+                <Image field={image} className="h-full w-full object-contain" editable={editable} />
               </div>
-              <div className="flex flex-col justify-center">
-                <div className="text-xl leading-9 font-bold">
-                  <Text className="text-foreground" field={title} editable={editable} />
+              <div className="min-w-0 flex-1">
+                <div className="features-fourcolgrid__item-title text-foreground text-base leading-snug font-normal">
+                  <Text field={title} editable={editable} />
                 </div>
-                <div className="text-background-muted-light leading-8">
+                <div className="features-fourcolgrid__item-description text-foreground-muted mt-0.5 text-sm leading-snug">
                   <Text field={description} editable={editable} />
                 </div>
               </div>
