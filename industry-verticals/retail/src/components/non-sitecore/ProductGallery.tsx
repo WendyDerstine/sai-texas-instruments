@@ -30,7 +30,7 @@ export const ProductGallery = ({ product }: ProductGalleryProps) => {
               onClick={() => setMainImageIndex(idx)}
               disabled={isActive}
               aria-label={`View image ${idx + 1}`}
-              className={`bg-background-muted focus:ring-accent size-15 overflow-hidden focus:ring-2 focus:outline-none xl:size-18 ${
+              className={`focus:ring-accent size-15 overflow-hidden bg-white focus:ring-2 focus:outline-none xl:size-18 ${
                 isActive ? 'cursor-not-allowed opacity-50' : 'hover:ring-accent hover:ring-2'
               }`}
             >
@@ -44,10 +44,10 @@ export const ProductGallery = ({ product }: ProductGalleryProps) => {
         {images[mainImageIndex] ? (
           <ContentSdkImage
             field={images[mainImageIndex]}
-            className="bg-background-muted aspect-square w-full object-contain p-4"
+            className="aspect-square w-full bg-white object-contain p-4"
           />
         ) : (
-          <div className="bg-background-muted aspect-square w-full" />
+          <div className="aspect-square w-full bg-white" />
         )}
       </div>
     </div>
