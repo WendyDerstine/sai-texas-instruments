@@ -75,3 +75,12 @@
     @apply pointer-events-none opacity-60;
   }
 }
+
+/* Promo "more info" CTA: solid red button, white text, sharp corners, no arrow */
+.promo-more-info-btn {
+  @apply bg-accent text-background hover:bg-accent/90 inline-flex items-center justify-center px-5 py-2.5 text-base font-semibold transition-colors;
+}
+
+.promo-more-info-btn::after {
+  content: none;
+}

@@ -23,26 +23,26 @@ const ReviewCard = (props: ReviewCardProps) => {
   const editable = props.isPageEditing ?? false;
   return (
     <>
-      <div className="aspect-square min-h-96 w-full rounded-2xl">
+      <div className="aspect-square min-h-96 w-full">
         <ContentSdkImage
-          className="image-cover rounded-2xl"
+          className="image-cover"
           field={props.fields.ReviewImage}
           editable={editable}
         />
       </div>
       <div className="px-5">
         <div className="bg-background relative -top-15 flex min-h-70 flex-col items-center justify-between rounded-2xl p-8 text-center shadow-xl">
-          <div className="bg-background absolute -top-10 flex h-[66px] w-[66px] items-center justify-center rounded-full">
+          <div className="bg-background absolute -top-10 flex h-[66px] w-[66px] items-center justify-center">
             {props.fields.Avatar.value?.src || props.isPageEditing ? (
               <ContentSdkImage
                 width={50}
                 height={50}
                 field={props.fields.Avatar}
-                className="h-[50px] w-[50px] rounded-full"
+                className="h-[50px] w-[50px]"
                 editable={editable}
               />
             ) : (
-              <div className="!text-foreground bg-background-muted flex h-[50px] w-[50px] items-center justify-center rounded-full">
+              <div className="!text-foreground bg-background-muted flex h-[50px] w-[50px] items-center justify-center">
                 <User className="size-8" />
               </div>
             )}

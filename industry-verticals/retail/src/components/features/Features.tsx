@@ -231,7 +231,7 @@ export const ImageCardGrid = (props: FeaturesProps) => {
           const image = item.featureImage.jsonValue;
           return (
             <div key={index}>
-              <div className="mb-7 aspect-4/3 w-full overflow-hidden rounded-lg bg-white">
+              <div className="mb-7 aspect-4/3 w-full overflow-hidden bg-white">
                 <Image field={image} className="h-full w-full object-cover" editable={editable} />
               </div>
               <h6>

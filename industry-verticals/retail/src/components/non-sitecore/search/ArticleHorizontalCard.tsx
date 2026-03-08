@@ -30,10 +30,10 @@ const ArticleHorizontalItemCard = ({ className = '', article }: ArticleCardItemC
         className={`group border-border hover:shadow-accent/20 bg-background relative my-4 flex max-h-52 w-full flex-row flex-nowrap rounded-md border p-6 shadow-sm transition-shadow hover:shadow-md ${className}`}
       >
         {validImageUrl && (
-          <div className="bg-background-surface w-1/4 flex-none overflow-hidden rounded">
+          <div className="bg-background-surface w-1/4 flex-none overflow-hidden">
             <Image
               src={validImageUrl}
-              className="h-full w-full rounded object-cover object-center lg:h-full lg:w-full"
+              className="h-full w-full object-cover object-center lg:h-full lg:w-full"
               alt="alt"
               width={500}
               height={115}
