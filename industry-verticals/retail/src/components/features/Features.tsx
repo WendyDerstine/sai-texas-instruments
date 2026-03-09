@@ -191,7 +191,7 @@ export const FourColGrid = (props: FeaturesProps) => {
 
   return (
     <FeatureWrapper props={props}>
-      <div className="features-fourcolgrid container grid grid-cols-1 gap-8 py-5 md:grid-cols-2 lg:grid-cols-4 lg:gap-6 lg:py-6">
+      <div className="features-fourcolgrid mx-auto grid w-full max-w-[1184px] grid-cols-1 gap-8 px-4 py-5 md:grid-cols-2 lg:grid-cols-4 lg:gap-6 lg:py-6">
         {results.map((item, index) => {
           const title = item.featureTitle.jsonValue;
           const description = item.featureDescription.jsonValue;

@@ -27,6 +27,7 @@ interface HeroBannerProps extends ComponentProps {
 }
 
 const DARK_REVERSED_HERO_STYLE = 'container-dark-background';
+const CLEAN_BACKGROUND_STYLE = 'container-clean-background';
 
 const HeroBannerCommon = ({
   params,
@@ -43,7 +44,8 @@ const HeroBannerCommon = ({
     styles?.includes(DARK_REVERSED_HERO_STYLE) &&
     styles?.includes(LayoutStyles.Reversed) &&
     styles?.includes(CommonStyles.HideAccentLine);
-  const isDarkBackground = styles?.includes(DARK_REVERSED_HERO_STYLE);
+  const isDarkBackground =
+    styles?.includes(DARK_REVERSED_HERO_STYLE) && !styles?.includes(CLEAN_BACKGROUND_STYLE);
 
   const renderingId = id?.trim() || undefined;
 
@@ -96,10 +98,15 @@ const HeroBannerCommon = ({
             />
           </>
         )}
-        {/* Gradient overlays – pointer-events-none so image and content stay clickable in editor */}
+        {/* Gradient: non-reversed = dark left / light right (desired); reversed = light left / dark right. Respect HideGradientOverlay. */}
         {!hideGradientOverlay && isDarkReversedHero && (
           <div
-            className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(to_right,#000_0%,#000_45%,rgba(0,0,0,0.4)_70%,transparent_100%)]"
+            className={clsx(
+              'pointer-events-none absolute inset-0 z-[1]',
+              isDarkBackground
+                ? 'bg-[linear-gradient(90deg,rgba(51,51,51,0)_0%,rgba(34,34,34,0.5)_35%,rgba(0,0,0,0.7)_50%,rgba(0,0,0,0.9)_65%)]'
+                : 'bg-[linear-gradient(90deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.5)_35%,rgba(255,255,255,0.7)_50%,rgba(255,255,255,0.9)_65%)]'
+            )}
             aria-hidden
           />
         )}
@@ -108,8 +115,8 @@ const HeroBannerCommon = ({
             className={clsx(
               'pointer-events-none absolute inset-0 z-[1]',
               isDarkBackground
-                ? 'bg-[linear-gradient(to_left,#000_0%,#000_45%,rgba(0,0,0,0.4)_70%,transparent_100%)]'
-                : 'bg-[linear-gradient(to_left,#fff_0%,#fff_45%,rgba(255,255,255,0.4)_70%,transparent_100%)]'
+                ? 'bg-[linear-gradient(90deg,rgba(0,0,0,0.9)_30%,rgba(0,0,0,0.7)_40%,rgba(34,34,34,0.5)_50%,rgba(51,51,51,0)_65%)]'
+                : 'bg-[linear-gradient(90deg,rgba(255,255,255,0.9)_30%,rgba(255,255,255,0.7)_40%,rgba(255,255,255,0.5)_50%,rgba(255,255,255,0)_65%)]'
             )}
             aria-hidden
           />
@@ -130,24 +137,25 @@ export const Default = ({ params, fields, rendering }: HeroBannerProps) => {
   const reverseLayout = styles.includes(LayoutStyles.Reversed);
   const screenLayer = styles.includes(HeroBannerStyles.ScreenLayer);
   const searchBarPlaceholderKey = `hero-banner-search-bar-${params.DynamicPlaceholderId}`;
-  const isDarkReversedHero =
-    styles.includes(DARK_REVERSED_HERO_STYLE) && reverseLayout && hideAccentLine;
 
   return (
     <HeroBannerCommon params={params} fields={fields} rendering={rendering}>
-      <div className={clsx('relative w-full', isDarkReversedHero && 'z-10')}>
-        <div className="container mx-auto px-4">
+      <div className="relative z-10 w-full">
+        <div className="mx-auto w-full max-w-[1184px] px-4">
           <div
-            className={`flex min-h-[483px] w-full py-10 lg:w-1/2 lg:items-center ${reverseLayout ? 'lg:mr-auto' : 'lg:ml-auto'}`}
+            className={clsx(
+              'flex min-h-[483px] w-full py-10 lg:items-center',
+              reverseLayout ? 'lg:mr-auto lg:justify-end' : 'lg:ml-auto lg:justify-start'
+            )}
           >
-            <div className="max-w-182">
+            <div className="max-w-[440px]">
               <div className={clsx({ shim: screenLayer })}>
                 <h1 className="text-center text-3xl leading-tight font-bold md:text-4xl lg:text-left lg:text-4xl xl:leading-[1.25]">
                   <ContentSdkText field={fields.Title} editable={editable} />
                   {!hideAccentLine && <AccentLine className="mx-auto !h-5 w-[9ch] lg:mx-0" />}
                 </h1>
 
-                <div className="mt-4 text-base md:text-lg">
+                <div className="mt-4 max-w-[400px] text-base md:text-lg">
                   <ContentSdkRichText
                     field={fields.Description}
                     className="text-center lg:text-left"
@@ -187,18 +195,21 @@ export const TopContent = ({ params, fields, rendering }: HeroBannerProps) => {
 
   return (
     <HeroBannerCommon params={params} fields={fields} rendering={rendering}>
-      <div className="relative w-full">
-        <div className="container mx-auto flex min-h-[483px] justify-center px-4">
+      <div className="relative z-10 w-full">
+        <div className="mx-auto flex min-h-[483px] w-full max-w-[1184px] justify-center px-4">
           <div
-            className={`flex flex-col items-center py-10 lg:py-44 ${reverseLayout ? 'justify-end' : 'justify-start'}`}
+            className={clsx(
+              'flex flex-col items-center py-10 lg:py-44',
+              reverseLayout ? 'justify-end' : 'justify-start'
+            )}
           >
-            <div className={clsx({ shim: screenLayer })}>
+            <div className={clsx('w-full max-w-[440px]', { shim: screenLayer })}>
               <h1 className="text-center text-3xl leading-tight font-bold md:text-4xl xl:text-4xl xl:leading-[1.25]">
                 <ContentSdkText field={fields.Title} editable={editable} />
                 {!hideAccentLine && <AccentLine className="mx-auto !h-5 w-[9ch]" />}
               </h1>
 
-              <div className="mt-4 text-base md:text-lg">
+              <div className="mx-auto mt-4 max-w-[400px] text-base md:text-lg">
                 <ContentSdkRichText
                   field={fields.Description}
                   className="text-center"

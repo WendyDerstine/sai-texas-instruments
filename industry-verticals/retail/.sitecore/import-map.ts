@@ -20,7 +20,7 @@ import ProductCarousel from 'src/components/non-sitecore/ProductCarousel';
 import AccentLine from '@/assets/icons/accent-line/AccentLine';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation, A11y, Keyboard } from 'swiper/modules';
-import { ArrowRight, ChevronLeft, ChevronRight, ChevronDown, Heart, Plus, Star, User, X, Check, Loader2, LoaderCircle, ShoppingCart, Search, Globe, MoreHorizontal, Home } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, ChevronDown, Heart, Plus, Star, User, X, Check, Loader2, LoaderCircle, Search, Globe, ShoppingCart, MoreHorizontal, Home } from 'lucide-react';
 import Link_a258c208ba01265ca0aa9c7abae745cc7141aa63 from 'next/link';
 import { cn } from '@/shadcn/lib/utils';
 import { CommonStyles, LayoutStyles, PromoFlags, HeroBannerStyles } from '@/types/styleFlags';
@@ -71,11 +71,8 @@ import { useSearchTracking } from '@/hooks/useSearchTracking';
 import { Accordion, Content, Header, Item, Trigger } from '@radix-ui/react-accordion';
 import Image from 'next/image';
 import SuggestionBlock from 'src/components/non-sitecore/search/SuggestionBlock';
-import { createPortal } from 'react-dom';
 import { Popover, PopoverContent, PopoverTrigger } from '@/shadcn/components/ui/popover';
-import { MiniCart } from 'src/components/non-sitecore/MiniCart';
 import PreviewSearch_938f3b0320996fc3fe6ab3d953daf2e708e085ca from 'src/components/non-sitecore/search/PreviewSearch';
-import { HEADER_RED_BAR_CART_ID } from '@/constants/header';
 import HamburgerIcon from '@/components/non-sitecore/HamburgerIcon';
 import { useClickAway } from '@/hooks/useClickAway';
 import { useStopResponsiveTransition } from '@/hooks/useStopResponsiveTransition';
@@ -86,7 +83,9 @@ import { Select as Select_4a7098778d43a9b4dcd5871ec48ea51b5a246850, SelectConten
 import { localeOptions } from '@/constants/localeOptions';
 import { useHeaderLogo, HeaderLogoProvider } from '@/contexts/HeaderLogoContext';
 import PreviewSearch_5f2b1beac3bd76f88e916164fed72d2d57c04ff5 from '@/components/non-sitecore/search/PreviewSearch';
+import { MiniCart } from '@/components/non-sitecore/MiniCart';
 import { HeaderSearch } from 'src/components/header/HeaderSearch';
+import { HeaderRedBarCart } from 'src/components/header/HeaderRedBarCart';
 import { generateIndexes } from '@/helpers/generateIndexes';
 import client from 'lib/sitecore-client';
 import * as FEAAS from '@sitecore-feaas/clientside/react';
@@ -212,9 +211,9 @@ const importMap = [
       { name: 'Check', value: Check },
       { name: 'Loader2', value: Loader2 },
       { name: 'LoaderCircle', value: LoaderCircle },
-      { name: 'ShoppingCart', value: ShoppingCart },
       { name: 'Search', value: Search },
       { name: 'Globe', value: Globe },
+      { name: 'ShoppingCart', value: ShoppingCart },
       { name: 'MoreHorizontal', value: MoreHorizontal },
       { name: 'Home', value: Home },
     ]
@@ -563,12 +562,6 @@ const importMap = [
     ]
   },
   {
-    module: 'react-dom',
-    exports: [
-      { name: 'createPortal', value: createPortal },
-    ]
-  },
-  {
     module: '@/shadcn/components/ui/popover',
     exports: [
       { name: 'Popover', value: Popover },
@@ -577,21 +570,9 @@ const importMap = [
     ]
   },
   {
-    module: 'src/components/non-sitecore/MiniCart',
-    exports: [
-      { name: 'MiniCart', value: MiniCart },
-    ]
-  },
-  {
     module: 'src/components/non-sitecore/search/PreviewSearch',
     exports: [
       { name: 'default', value: PreviewSearch_938f3b0320996fc3fe6ab3d953daf2e708e085ca },
-    ]
-  },
-  {
-    module: '@/constants/header',
-    exports: [
-      { name: 'HEADER_RED_BAR_CART_ID', value: HEADER_RED_BAR_CART_ID },
     ]
   },
   {
@@ -664,9 +645,21 @@ const importMap = [
     ]
   },
   {
+    module: '@/components/non-sitecore/MiniCart',
+    exports: [
+      { name: 'MiniCart', value: MiniCart },
+    ]
+  },
+  {
     module: 'src/components/header/HeaderSearch',
     exports: [
       { name: 'HeaderSearch', value: HeaderSearch },
+    ]
+  },
+  {
+    module: 'src/components/header/HeaderRedBarCart',
+    exports: [
+      { name: 'HeaderRedBarCart', value: HeaderRedBarCart },
     ]
   },
   {

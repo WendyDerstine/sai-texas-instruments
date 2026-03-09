@@ -3,7 +3,7 @@ import { ComponentProps } from '@/lib/component-props';
 import { Placeholder } from '@sitecore-content-sdk/nextjs';
 import { HeaderLogoProvider } from '@/contexts/HeaderLogoContext';
 import { HeaderSearch } from './HeaderSearch';
-import { HEADER_RED_BAR_CART_ID } from '@/constants/header';
+import { HeaderRedBarCart } from './HeaderRedBarCart';
 
 export type HeaderProps = ComponentProps & {
   params: { [key: string]: string };
@@ -22,8 +22,8 @@ export const Default = (props: HeaderProps): JSX.Element => {
       className={`component header sticky top-0 z-50 w-full bg-white shadow-sm ${styles}`}
       id={id}
     >
-      {/* Tier 1 (white): logo left, search center, utilities right — height ~50% larger than base */}
-      <div className="relative mx-auto flex h-[5.25rem] max-w-7xl items-center gap-4 px-4 sm:px-6 lg:gap-6 lg:px-8">
+      {/* Tier 1 (white): logo left, search center, utilities right — aligned with hero (max-w-[1184px] px-4) */}
+      <div className="relative mx-auto flex h-[5.25rem] w-full max-w-[1184px] items-center gap-4 px-4 lg:gap-6">
         <div className="flex shrink-0 items-center max-lg:order-1 lg:min-w-0 lg:flex-[0_1_auto] lg:justify-start">
           <HeaderLogoProvider>
             <Placeholder name={`header-left-${DynamicPlaceholderId}`} rendering={props.rendering} />
@@ -37,19 +37,17 @@ export const Default = (props: HeaderProps): JSX.Element => {
         </div>
       </div>
 
-      {/* Tier 2 (red bar, in-flow so it does not overlap breadcrumb) */}
+      {/* Tier 2 (red bar): same content width as hero for alignment */}
       <div
-        className="header-red-bar flex w-full flex-wrap items-center justify-between gap-4 bg-[#CC0000] px-4 py-3 lg:gap-6 lg:px-8"
+        className="header-red-bar flex w-full flex-wrap items-center justify-between gap-4 bg-[#CC0000] py-3 lg:gap-6"
         style={{ minHeight: '48px' }}
       >
-        <div className="container mx-auto flex max-w-7xl flex-1 flex-wrap items-center justify-start gap-x-6 gap-y-2 xl:gap-x-8">
+        <div className="mx-auto flex w-full max-w-[1184px] flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 xl:gap-x-8">
           <Placeholder name={`header-nav-${DynamicPlaceholderId}`} rendering={props.rendering} />
+          <div className="flex shrink-0 items-center">
+            <HeaderRedBarCart />
+          </div>
         </div>
-        <div
-          id={HEADER_RED_BAR_CART_ID}
-          className="flex shrink-0 items-center pr-4 lg:pr-8"
-          aria-hidden
-        />
       </div>
     </div>
   );
