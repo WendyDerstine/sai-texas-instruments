@@ -82,7 +82,7 @@ export const Default = (props: BreadcrumbProps) => {
       className={`component breadcrumb border-b border-[#e5e7eb] bg-[#fafafa] ${styles}`}
       id={id}
     >
-      <ol className="container mx-auto flex max-w-7xl items-center gap-2 overflow-auto px-4 py-2.5 text-sm sm:px-6 lg:gap-3 lg:px-8">
+      <ol className="mx-auto flex w-full max-w-[1184px] items-center gap-2 overflow-auto px-4 py-2.5 text-sm lg:gap-3">
         {homeAncestor && (
           <li key={homeAncestor.id} className="flex items-center gap-2 text-[#6b7280] lg:gap-3">
             <Link

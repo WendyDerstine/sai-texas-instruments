@@ -26,16 +26,12 @@ type ArticleModel = {
 
 type PreviewSearchComponentProps = {
   defaultItemsPerPage?: number;
-  isOpen: boolean;
-  setIsSearchOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type InitialState = PreviewSearchInitialState<'itemsPerPage' | 'suggestionsList'>;
 
 export const PreviewSearchComponent = ({
   defaultItemsPerPage = 6,
-  isOpen,
-  setIsSearchOpen,
 }: PreviewSearchComponentProps) => {
   const router = useRouter();
   const { handleSearch } = useSearchTracking();
@@ -92,7 +88,6 @@ export const PreviewSearchComponent = ({
 
   const handleSubmit = (e: SyntheticEvent): void => {
     e.preventDefault();
-    if (isOpen) setIsSearchOpen(false);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const target = e.target.query as HTMLInputElement;
@@ -105,15 +100,15 @@ export const PreviewSearchComponent = ({
       <form ref={formRef} onSubmit={handleSubmit} className="flex-1">
         <PreviewSearch.Input
           name="query"
-          className="focus:ring-accent border-border w-full rounded-md border px-3 py-2 text-base focus:border-transparent focus:ring-2 focus:outline-none sm:px-4 sm:py-3 sm:text-lg"
+          className="focus:ring-accent focus:border-border w-full rounded-md border bg-white px-3 py-2 text-sm text-[#374151] placeholder:text-[#9ca3af] focus:ring-2 focus:outline-none"
           onChange={keyphraseHandler}
           autoComplete="off"
-          placeholder="Search content, products..."
+          placeholder="Search"
         />
       </form>
 
       <PreviewSearch.Content
-        className="bg-background mt-0.5 flex h-100 justify-center overflow-hidden rounded-b-md pt-0 shadow-xl transition-opacity sm:w-(--radix-popover-trigger-width)"
+        className="bg-background z-[100] mt-0.5 flex h-100 justify-center overflow-hidden rounded-b-md pt-0 shadow-xl transition-opacity sm:w-(--radix-popover-trigger-width)"
         style={contentWidth ? { width: `${contentWidth}px` } : undefined}
       >
         <Spinner loading={loading} />

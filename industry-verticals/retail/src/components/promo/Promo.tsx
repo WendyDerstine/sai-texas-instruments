@@ -73,7 +73,11 @@ export const SingleImageContainer = ({
   PromoImageOne,
   withShapes,
   withShadows,
-}: PromoImageGroupProps): JSX.Element => {
+  resizeForImage,
+}: PromoImageGroupProps & { resizeForImage?: boolean }): JSX.Element => {
+  const mediaClass = resizeForImage
+    ? 'h-full w-full object-contain bg-transparent'
+    : 'h-full w-full object-cover';
   const shadowClass = isShadowClassActive(withShadows ?? false);
   return (
     <>
@@ -86,9 +90,11 @@ export const SingleImageContainer = ({
             <div className="bg-background-muted absolute top-1/2 right-0 z-0 aspect-5/3 w-3/4 -translate-y-1/2 transform rounded-2xl"></div>
           )}
           <div
-            className={`relative z-10 aspect-4/3 w-full max-w-4xl overflow-hidden ${shadowClass}`}
+            className={`relative z-10 aspect-4/3 w-full max-w-4xl overflow-hidden ${shadowClass} ${
+              resizeForImage ? 'bg-transparent' : ''
+            }`}
           >
-            <ContentSdkImage field={PromoImageOne} className="h-full w-full object-cover" />
+            <ContentSdkImage field={PromoImageOne} className={mediaClass} />
           </div>
         </div>
       </div>
@@ -147,6 +153,7 @@ export const Default = (props: PromoProps): JSX.Element => {
   const showSingleImage = !props?.params?.styles?.includes(PromoFlags.ShowMultipleImages);
   const withShapes = !props?.params?.styles?.includes(PromoFlags.HidePromoShapes);
   const withShadows = !props?.params?.styles?.includes(PromoFlags.HidePromoShadows);
+  const resizeForImage = props?.params?.styles?.includes(PromoFlags.ResizeForImage);
 
   const justifyContentClass = !showSingleImage ? 'justify-self-start' : '';
   const firstColumnSize = showSingleImage ? 'lg:col-span-6' : 'lg:col-span-7';
@@ -161,6 +168,7 @@ export const Default = (props: PromoProps): JSX.Element => {
               PromoImageOne={props.fields.PromoImageOne}
               withShapes={withShapes}
               withShadows={withShadows}
+              resizeForImage={resizeForImage}
             />
           ) : (
             <MultipleImageContainer
@@ -188,14 +196,21 @@ export const WithFullImage = (props: PromoProps): JSX.Element => {
   const isPromoReversed = !props?.params?.styles?.includes(LayoutStyles.Reversed)
     ? ' flex-col'
     : 'flex-col-reverse';
+  const resizeForImage = props?.params?.styles?.includes(PromoFlags.ResizeForImage);
 
   return (
     <section className={`${props.params.styles} py-20`} id={id ? id : undefined}>
       <div className={`container flex ${isPromoReversed}`}>
-        <div className="relative my-10 aspect-[1232/608] overflow-hidden">
+        <div
+          className={`relative my-10 aspect-[1232/608] overflow-hidden ${
+            resizeForImage ? 'bg-transparent' : ''
+          }`}
+        >
           <ContentSdkImage
             field={props.fields.PromoImageTwo}
-            className="h-full w-full object-cover"
+            className={
+              resizeForImage ? 'h-full w-full object-contain' : 'h-full w-full object-cover'
+            }
             editable={editable}
           />
         </div>
@@ -230,6 +245,7 @@ export const WithQuote = (props: PromoProps): JSX.Element => {
   const id = props.params.RenderingIdentifier;
   const withQuote = !props?.params?.styles?.includes(PromoFlags.HidePromoQuotes);
   const isReversed = !props?.params?.styles?.includes(LayoutStyles.Reversed);
+  const resizeForImage = props?.params?.styles?.includes(PromoFlags.ResizeForImage);
 
   const classesWhenReversed = {
     container: isReversed ? 'container-align-left' : 'container-align-right',
@@ -268,7 +284,9 @@ export const WithQuote = (props: PromoProps): JSX.Element => {
             >
               <ContentSdkImage
                 field={props.fields.PromoImageOne}
-                className="absolute inset-0 h-full w-full object-cover"
+                className={`absolute inset-0 h-full w-full ${
+                  resizeForImage ? 'bg-transparent object-contain' : 'object-cover'
+                }`}
               />
             </div>
           </div>

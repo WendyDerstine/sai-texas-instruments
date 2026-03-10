@@ -247,3 +247,55 @@ export const ImageCardGrid = (props: FeaturesProps) => {
     </FeatureWrapper>
   );
 };
+
+/**
+ * Stats variant: section title with red underline, grid of stat value (red) + description.
+ * Matches ti.com "Our commitment to corporate citizenship" block. Uses feature title as stat, feature description as body.
+ */
+export const Stats = (props: FeaturesProps) => {
+  const { page } = useSitecore();
+  const editable = page?.mode?.isEditing ?? false;
+  const hideAccentLine = props.params.styles?.includes(CommonStyles.HideAccentLine);
+  const { data } = props.fields || {};
+  const { datasource } = data || {};
+  const results = datasource?.children?.results ?? [];
+  const featureSectionTitle = datasource?.title;
+
+  return (
+    <FeatureWrapper props={props}>
+      <div className="container py-16 md:py-20">
+        <div className="mb-12 md:mb-16">
+          <h2 className="text-foreground inline-block max-w-2xl text-xl leading-tight font-normal md:text-2xl">
+            {featureSectionTitle?.jsonValue && (
+              <Text field={featureSectionTitle.jsonValue} editable={editable} />
+            )}
+            {!hideAccentLine && <AccentLine className="mt-2 w-8 md:w-10" />}
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-x-12 md:gap-y-12 lg:grid-cols-3 lg:gap-x-16 lg:gap-y-14">
+          {results.map((item, index) => {
+            const title = item?.featureTitle?.jsonValue;
+            const description = item?.featureDescription?.jsonValue;
+            const showStat = title?.value != null || editable;
+            const showDesc = description?.value != null || editable;
+            if (!showStat && !showDesc) return null;
+            return (
+              <div className="flex flex-col" key={index}>
+                {showStat && (
+                  <span className="text-accent mb-1 text-3xl leading-tight font-bold md:text-4xl">
+                    <Text field={title} editable={editable} tag="span" />
+                  </span>
+                )}
+                {showDesc && (
+                  <span className="text-foreground text-base leading-relaxed md:text-lg">
+                    <Text field={description} editable={editable} tag="span" />
+                  </span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </FeatureWrapper>
+  );
+};

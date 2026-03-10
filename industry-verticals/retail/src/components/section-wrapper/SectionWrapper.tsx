@@ -31,7 +31,7 @@ export const Default = ({ params, fields, rendering }: SectionWrapperProps) => {
       <div className="container flex flex-col items-center">
         <h2>
           <Text field={fields.Title} editable={editable} />
-          {!hideAccentLine && <AccentLine className="ml-auto !h-4 w-[8ch]" />}
+          {!hideAccentLine && <AccentLine className="ml-auto w-[8ch]" />}
         </h2>
 
         <div className="mt-5 mb-12 w-full">

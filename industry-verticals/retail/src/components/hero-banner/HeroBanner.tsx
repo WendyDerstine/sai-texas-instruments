@@ -82,9 +82,8 @@ const HeroBannerCommon = ({
             loop
             playsInline
             poster={fields.Image?.value?.src}
-          >
-            <source src={fields.Video?.value?.src} type="video/webm" />
-          </video>
+            src={fields.Video?.value?.src}
+          />
         ) : (
           <>
             <ContentSdkImage
@@ -152,7 +151,7 @@ export const Default = ({ params, fields, rendering }: HeroBannerProps) => {
               <div className={clsx({ shim: screenLayer })}>
                 <h1 className="text-center text-3xl leading-tight font-bold md:text-4xl lg:text-left lg:text-4xl xl:leading-[1.25]">
                   <ContentSdkText field={fields.Title} editable={editable} />
-                  {!hideAccentLine && <AccentLine className="mx-auto !h-5 w-[9ch] lg:mx-0" />}
+                  {!hideAccentLine && <AccentLine className="mx-auto w-[9ch] lg:mx-0" />}
                 </h1>
 
                 <div className="mt-4 max-w-[400px] text-base md:text-lg">
@@ -206,7 +205,7 @@ export const TopContent = ({ params, fields, rendering }: HeroBannerProps) => {
             <div className={clsx('w-full max-w-[440px]', { shim: screenLayer })}>
               <h1 className="text-center text-3xl leading-tight font-bold md:text-4xl xl:text-4xl xl:leading-[1.25]">
                 <ContentSdkText field={fields.Title} editable={editable} />
-                {!hideAccentLine && <AccentLine className="mx-auto !h-5 w-[9ch]" />}
+                {!hideAccentLine && <AccentLine className="mx-auto w-[9ch]" />}
               </h1>
 
               <div className="mx-auto mt-4 max-w-[400px] text-base md:text-lg">

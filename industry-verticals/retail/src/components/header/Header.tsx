@@ -22,8 +22,8 @@ export const Default = (props: HeaderProps): JSX.Element => {
       className={`component header sticky top-0 z-50 w-full bg-white shadow-sm ${styles}`}
       id={id}
     >
-      {/* Tier 1 (white): logo left, search center, utilities right — aligned with hero (max-w-[1184px] px-4) */}
-      <div className="relative mx-auto flex h-[5.25rem] w-full max-w-[1184px] items-center gap-4 px-4 lg:gap-6">
+      {/* Tier 1 (white): logo left, search center, utilities right — aligned with hero (max-w-[1184px] px-4). z-10 so search preview dropdown stacks above red nav bar. */}
+      <div className="relative z-10 mx-auto flex h-[5.25rem] w-full max-w-[1184px] items-center gap-4 px-4 lg:gap-6">
         <div className="flex shrink-0 items-center max-lg:order-1 lg:min-w-0 lg:flex-[0_1_auto] lg:justify-start">
           <HeaderLogoProvider>
             <Placeholder name={`header-left-${DynamicPlaceholderId}`} rendering={props.rendering} />

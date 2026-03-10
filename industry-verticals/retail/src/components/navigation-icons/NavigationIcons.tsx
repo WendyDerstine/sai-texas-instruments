@@ -104,11 +104,7 @@ export const Default = (props: NavigationIconsProps): JSX.Element => {
         <div className="absolute top-full right-0 left-0 z-50 border-b border-[#e5e7eb] bg-white shadow-lg">
           <div className="mx-auto max-w-7xl px-4 py-4">
             <div className="flex items-center gap-2">
-              <PreviewSearch
-                rfkId={PREVIEW_WIDGET_ID}
-                isOpen={isSearchOpen}
-                setIsSearchOpen={setIsSearchOpen}
-              />
+              <PreviewSearch rfkId={PREVIEW_WIDGET_ID} />
 
               <button
                 onClick={() => setIsSearchOpen(false)}

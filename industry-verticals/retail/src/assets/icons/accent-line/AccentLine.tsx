@@ -2,15 +2,19 @@ const AccentLine = ({ className }: { className?: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 441 25"
+      viewBox="0 0 120 4"
       fill="none"
-      className={`mt-1 block h-[0.5em] w-[7ch] max-w-full group-[.text-center]/heading:mx-auto group-[.text-right]/heading:ml-auto ${className} text-accent`}
+      className={`mt-1 block h-0.5 w-[7ch] max-w-full group-[.text-center]/heading:mx-auto group-[.text-right]/heading:ml-auto ${className} text-accent`}
       preserveAspectRatio="none"
+      aria-hidden
     >
-      <path
-        d="M3 22C93.4059 7.66215 306.974 -12.4108 438 22"
+      <line
+        x1="0"
+        y1="2"
+        x2="120"
+        y2="2"
         stroke="currentColor"
-        strokeWidth="6"
+        strokeWidth="4"
         strokeLinecap="round"
       />
     </svg>
